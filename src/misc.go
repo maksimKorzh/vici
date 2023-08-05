@@ -40,7 +40,14 @@ func getst(status stcode) string {
 /* msg -- print message on screen (visual mode) */
 func msg(x, y int, fg, bg termbox.Attribute, msg string) {
   for _, c := range msg {
-    termbox.SetCell(x, y, c, fg, bg)
-    x += runewidth.RuneWidth(c)
+    if c == '\t' {
+      for i := 0; i < TABS; i++ {
+        termbox.SetCell(x, y, ' ', fg, bg)
+        x += runewidth.RuneWidth(' ')
+      }
+    } else {
+      termbox.SetCell(x, y, c, fg, bg)
+      x += runewidth.RuneWidth(c)
+    }
   }
 }

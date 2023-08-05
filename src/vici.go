@@ -30,30 +30,6 @@ func main() {
     readkey()
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*  var cursave, i int
   var status stcode
   for {

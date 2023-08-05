@@ -3,7 +3,7 @@ package main
 import "github.com/nsf/termbox-go"
 
 /* hlline -- highlight current line */
-func hlline(row, col int) {
+func hlline(col, row int) {
   if row == curln - offrw {
     cols, rows := termbox.Size(); rows--
     if row >= rows { return }

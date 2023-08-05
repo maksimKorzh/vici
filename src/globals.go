@@ -10,6 +10,9 @@ type buftype struct {
 }
 
 /* const declarations for vici */
+const TABS = 4      /* TAB width */
+const TABR = ' '    /* TAB replace char */
+
 const (
   VIEW int = iota
   EDIT
@@ -55,8 +58,11 @@ const (
 
 const (
   DCOL = termbox.ColorDefault
+  NCOL = termbox.ColorBlack
+  WCOL = termbox.ColorWhite
   BCOL = termbox.ColorBlue
   GCOL = termbox.ColorGreen
+  CCOL = termbox.ColorCyan
 )
 
 /* variables for vici */

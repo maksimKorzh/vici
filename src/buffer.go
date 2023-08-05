@@ -4,7 +4,6 @@ import "fmt"
 import "regexp"
 import "strings"
 import "strconv"
-import "github.com/nsf/termbox-go"
 
 /* setbuf (in memory) -- initialize line storage buffer */
 func setbuf() {
@@ -195,50 +194,31 @@ func doscroll() {
 
 /* dorender -- display buffer content (visual mode) */
 func dorender() {
-  var row, col int
-  for row = 0; row < rows; row++ {
+  for row := 0; row < rows; row++ {
     brow := row + offrw
-    for col = 0; col < cols; col++ {
-      bcol := col + offcl
-      if brow < len(buf) {
-        lnoff := lnwidth - len(strconv.Itoa(brow+1))-1
-        msg(lnoff, row,
-        termbox.ColorCyan, termbox.ColorDefault, strconv.Itoa(brow+1))
-      }
-      if brow >= 0 &&  brow < len(buf) && bcol < len(buf[brow].txt) {
-        if strings.Contains(buf[brow].txt, "\t") {
-           termbox.SetCell(col+lnwidth, row, rune(' '), DCOL, BCOL)
-        } else {
-          if hl == 1 {
-            //highlight_syntax(&col, row, bcol, brow)
-          } else {
-            ch := rune(buf[brow].txt[bcol])
-            termbox.SetCell(col+lnwidth, row, ch, DCOL, DCOL)
-          }
-        }
-      } else if row+offrw > len(buf)-1 {
-        termbox.SetCell(0, row, '*', termbox.ColorBlue, termbox.ColorDefault)
-      }
+    if brow >= 1 && brow < len(buf) {
+      lnnum := strconv.Itoa(brow)
+      lnoff := lnwidth - len(lnnum)-1
+      msg(lnoff, row, CCOL, DCOL, lnnum)
+      line := buf[brow].txt[offcl:]
+      msg(curcl-offcl+lnwidth, row, DCOL, DCOL, line)
     }
-    hlline(row, col)
+    hlline(0, row)
     dostat()
-    termbox.SetChar(col, row, '\n')
   }
 }
 
 /* dostat -- display status bar */
 func dostat() {
-  var mode_status string
-  if mode > 0 { mode_status = " EDIT: "
-  } else { mode_status = " VIEW: " }
-  filename_length := len(savefile)
-  if filename_length > 24 { filename_length = 24 }
-  file_status := savefile[:filename_length] + " - " + strconv.Itoa(len(buf)) + " lines"
-  if dirty { file_status += " modified "
-  } else { file_status += " saved" }
-  cursor_status := " Row " + strconv.Itoa(curln+1) + ", Col " + strconv.Itoa(curcl+1) + " "
-  used_space := len(mode_status) + len(file_status) + len(cursor_status)
-  spaces := strings.Repeat(" ", cols - used_space)
-  message := mode_status + file_status + spaces + cursor_status
-  msg(0, rows, termbox.ColorBlack, termbox.ColorWhite, message)
+  var modstat string
+  fnlen := len(savefile)
+  if fnlen > 24 { fnlen = 24 }
+  flstat := savefile[:fnlen] + " - " + strconv.Itoa(len(buf)) + " lines"
+  if dirty { flstat += " modified " } else { flstat += " saved" }
+  if mode == EDIT { modstat = " EDIT: " } else { modstat = " VIEW: " }
+  curstat := " Row " + strconv.Itoa(curln+1) + ", Col " + strconv.Itoa(curcl+1) + " "
+  uspace := len(modstat) + len(flstat) + len(curstat)
+  spaces := strings.Repeat(" ", cols - uspace)
+  message := modstat + flstat + spaces + curstat
+  msg(0, rows, NCOL, WCOL, message)
 }
