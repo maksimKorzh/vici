@@ -221,6 +221,24 @@ func dorender() {
       }
     }
     hlline(row, col)
+    dostat()
     termbox.SetChar(col, row, '\n')
   }
+}
+
+/* dostat -- display status bar */
+func dostat() {
+  var mode_status string
+  if mode > 0 { mode_status = " EDIT: "
+  } else { mode_status = " VIEW: " }
+  filename_length := len(savefile)
+  if filename_length > 24 { filename_length = 24 }
+  file_status := savefile[:filename_length] + " - " + strconv.Itoa(len(buf)) + " lines"
+  if dirty { file_status += " modified "
+  } else { file_status += " saved" }
+  cursor_status := " Row " + strconv.Itoa(curln+1) + ", Col " + strconv.Itoa(curcl+1) + " "
+  used_space := len(mode_status) + len(file_status) + len(cursor_status)
+  spaces := strings.Repeat(" ", cols - used_space)
+  message := mode_status + file_status + spaces + cursor_status
+  msg(0, rows, termbox.ColorBlack, termbox.ColorWhite, message)
 }

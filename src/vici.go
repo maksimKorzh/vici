@@ -12,6 +12,8 @@ func main() {
     savefile = os.Args[1]
     status := doread(0, savefile)
     if status == ERR { fmt.Println("?") }
+  } else {
+    savefile = "out.txt"
   }
 
   err := termbox.Init()
@@ -23,7 +25,6 @@ func main() {
     termbox.Clear(DCOL, DCOL)
     doscroll()
     dorender()
-  //dostatus()
     termbox.SetCursor(curcl - offcl+lnwidth, curln - offrw)
     termbox.Flush()
     readkey()
