@@ -1,5 +1,8 @@
 package main
 
+import "github.com/nsf/termbox-go"
+import "github.com/mattn/go-runewidth"
+
 /* min -- get min number */
 func min(num1, num2 int) int {
   if num1 < num2 { return num1 }
@@ -32,4 +35,12 @@ func getst(status stcode) string {
     case OK: descr = "OK"
   }
   return descr
+}
+
+/* msg -- print message on screen (visual mode) */
+func msg(x, y int, fg, bg termbox.Attribute, msg string) {
+  for _, c := range msg {
+    termbox.SetCell(x, y, c, fg, bg)
+    x += runewidth.RuneWidth(c)
+  }
 }

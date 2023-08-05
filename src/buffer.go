@@ -2,6 +2,9 @@ package main
 
 import "fmt"
 import "regexp"
+import "strings"
+import "strconv"
+import "github.com/nsf/termbox-go"
 
 /* setbuf (in memory) -- initialize line storage buffer */
 func setbuf() {
@@ -180,4 +183,44 @@ func subst(sub string) stcode {
   }
   stat = OK
   return stat
+}
+
+/* doscroll -- scroll buffer based on offrw and offcl (visual mode) */
+func doscroll() {
+  if curln < offrw { offrw = curln }
+  if curcl < offcl { offcl = curcl }
+  if curln >= offrw + rows { offrw = curln-rows+1 }
+  if curcl >= offcl + cols-lnwidth { offcl = curcl-cols+lnwidth+1 }
+}
+
+/* dorender -- display buffer content (visual mode) */
+func dorender() {
+  var row, col int
+  for row = 0; row < rows; row++ {
+    brow := row + offrw
+    for col = 0; col < cols; col++ {
+      bcol := col + offcl
+      if brow < len(buf) {
+        lnoff := lnwidth - len(strconv.Itoa(brow+1))-1
+        msg(lnoff, row,
+        termbox.ColorCyan, termbox.ColorDefault, strconv.Itoa(brow+1))
+      }
+      if brow >= 0 &&  brow < len(buf) && bcol < len(buf[brow].txt) {
+        if strings.Contains(buf[brow].txt, "\t") {
+           termbox.SetCell(col+lnwidth, row, rune(' '), DCOL, BCOL)
+        } else {
+          if hl == 1 {
+            //highlight_syntax(&col, row, bcol, brow)
+          } else {
+            ch := rune(buf[brow].txt[bcol])
+            termbox.SetCell(col+lnwidth, row, ch, DCOL, DCOL)
+          }
+        }
+      } else if row+offrw > len(buf)-1 {
+        termbox.SetCell(0, row, '*', termbox.ColorBlue, termbox.ColorDefault)
+      }
+    }
+    hlline(row, col)
+    termbox.SetChar(col, row, '\n')
+  }
 }

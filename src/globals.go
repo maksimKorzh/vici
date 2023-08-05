@@ -1,13 +1,20 @@
 package main
 
-/* edittype -- types for in-memory version of edit */
+import "github.com/nsf/termbox-go"
+
+/* types for vici */
 type stcode int
 type buftype struct {
   txt string   /* text of line */
   mark bool    /* mark of line */
 }
 
-/* editcons -- const declarations for edit */
+/* const declarations for vici */
+const (
+  VIEW int = iota
+  EDIT
+)
+
 const (
   ENDDATA stcode = iota
   ERR
@@ -46,14 +53,27 @@ const (
   WCMD     = 'w'
 )
 
-/* editvar -- variables for edit */
+const (
+  DCOL = termbox.ColorDefault
+  BCOL = termbox.ColorBlue
+  GCOL = termbox.ColorGreen
+)
+
+/* variables for vici */
 var buf[]buftype      /* editor's buffer */
 var cpb[]buftype      /* copy buffer */
 
+var hl int            /* syntax highlight toggler (visual mode) */
+var mode int          /* visual/command mode toggler */
+var dirty bool        /* modified flag */
+var lnwidth int       /* line number width (visual mode) */
+var rows, cols int    /* number of rows and columns (visual mode) */
+var offrw, offcl int  /* offsets for scrolling (visual mode) */
 var line1 int         /* first line number */
 var line2 int         /* second line number */
 var nlines int        /* # of line numbers specified */
 var curln int         /* current line -- value of dot */
+var curcl int         /* current column (visual mode) */
 var lastln int        /* last line -- value of $ */
 
 var pat string        /* pattern */

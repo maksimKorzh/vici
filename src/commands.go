@@ -336,3 +336,13 @@ func docmd (lin string, i *int, status *stcode) stcode {
   }
   return *status
 }
+
+/* execcom -- execute command (visual mode) */
+func execcom(com string) {
+  var i int
+  var status stcode
+  lin = com + "\n"
+  docmd(lin, &i, &status)
+  fmt.Println("execcom:", getst(status))
+}
+
