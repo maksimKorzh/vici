@@ -203,7 +203,7 @@ func doscroll() {
 
 /* dorender -- display buffer content (visual mode) */
 func dorender() {
-  for row := 0; row < rows; row++ {
+  for row := 0; row <= rows; row++ {
     brow := row + offrw
     if brow >= 1 && brow < len(buf) {
       lnnum := strconv.Itoa(brow)
@@ -211,6 +211,8 @@ func dorender() {
       msg(lnoff, row-1, CCOL, DCOL, lnnum)
       line := buf[brow].txt[offcl:]
       msg(curcl-offcl+lnwidth, row-1, DCOL, DCOL, line)
+    } else if row-1 != 0 {
+      msg(0, row-1, BCOL, DCOL, "*")
     }
     hlline(0, row)
   }

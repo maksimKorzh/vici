@@ -1,7 +1,6 @@
 package main
 
 import "os"
-//import "fmt"
 import "bufio"
 import "strings"
 import "github.com/nsf/termbox-go"
@@ -19,7 +18,6 @@ func doread(n int, fil string) stcode {
     puttxt(line)
     count += len(line) + 1
   }
-  //fmt.Println(count)
   return OK
 }
 

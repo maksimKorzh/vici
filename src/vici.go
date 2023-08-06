@@ -12,6 +12,7 @@ func main() {
     status := doread(0, savefile)
     if status == ERR { fmt.Println("?") }
   } else {
+    setbuf()
     savefile = "out.txt"
   }
 
@@ -19,7 +20,11 @@ func main() {
   if err != nil { fmt.Println(err); os.Exit(1) }
   for {
     doshow(true)
-    termbox.SetCursor(curcl - offcl+lnwidth, curln - offrw-1)
+    if len(buf) > 1 {
+      termbox.SetCursor(curcl - offcl+lnwidth, curln - offrw-1)
+    } else {
+      termbox.SetCursor(curcl - offcl+lnwidth, 0)
+    }
     termbox.Flush()
     readkey()
   }

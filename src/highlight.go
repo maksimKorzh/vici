@@ -1,6 +1,6 @@
 package main
 
-//import "strings"
+import "strings"
 import "github.com/nsf/termbox-go"
 
 /* hlline -- highlight current line */
@@ -13,8 +13,8 @@ func hlline(col, row int) {
         cell := termbox.GetCell(col, row-1)
         termbox.SetCell(col, row-1, cell.Ch, DCOL, BCOL)
       } else {
-        //msg(col, row, DCOL, BCOL, "1" + strings.Repeat(" ", cols-1))
-        //break
+        msg(col, row, DCOL, BCOL, "1" + strings.Repeat(" ", cols-1))
+        break
       }
     }
   }
