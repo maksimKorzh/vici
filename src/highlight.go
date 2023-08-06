@@ -7,7 +7,7 @@ import "github.com/nsf/termbox-go"
 func hlline(col, row int) {
   if row == curln - offrw {
     cols, rows := termbox.Size(); rows--
-    if row >= rows { return }
+    if row > rows { return }
     for col = 0; col < cols; col++ {
       if len(buf) > 1 {
         cell := termbox.GetCell(col, row-1)

@@ -15,9 +15,9 @@ func main() {
     setbuf()
     savefile = "out.txt"
   }
-
   err := termbox.Init()
   if err != nil { fmt.Println(err); os.Exit(1) }
+  curln = 1
   for {
     doshow(true)
     if len(buf) > 1 {

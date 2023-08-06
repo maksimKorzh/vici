@@ -195,9 +195,9 @@ func subst(sub string) stcode {
 
 /* doscroll -- scroll buffer based on offrw and offcl (visual mode) */
 func doscroll() {
-  if curln < offrw { offrw = curln }
+  if curln < offrw+1 { offrw = curln-1 }
   if curcl < offcl { offcl = curcl }
-  if curln >= offrw + rows { offrw = curln-rows+1 }
+  if curln >= offrw + rows+1 { offrw = curln-rows }
   if curcl >= offcl + cols-lnwidth { offcl = curcl-cols+lnwidth+1 }
 }
 
