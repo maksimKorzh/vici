@@ -8,8 +8,8 @@ func hlline(col, row int) {
     cols, rows := termbox.Size(); rows--
     if row >= rows { return }
     for col = 0; col < cols; col++ {
-      cell := termbox.GetCell(col, row)
-      termbox.SetCell(col, row, cell.Ch, DCOL, BCOL)
+      cell := termbox.GetCell(col, row-1)
+      termbox.SetCell(col, row-1, cell.Ch, DCOL, BCOL)
     }
   }
 }

@@ -1,0 +1,49 @@
+func execute_command() { ROWS--
+  termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
+  display_text_buffer()
+  display_status_bar()
+  termbox.SetCursor(0, ROWS+1)
+  termbox.Flush()
+  command := ""
+  command_loop:
+  for {
+    event := get_key()
+    switch event.Key {
+      case termbox.KeyEsc: break command_loop
+      case termbox.KeyEnter:
+        content := ""
+        for _, line := range text_buffer { content += string(line) + "\n" }
+        is_search := false
+        if strings.ContainsRune(command, '=') { is_search = true }
+        cmd := exec.Command("sed", command)
+        if is_search == true { cmd = exec.Command("sed", "-n", command) }
+        cmd.Stdin = bytes.NewBufferString(content)
+        var output bytes.Buffer
+        cmd.Stdout = &output
+        err := cmd.Run()
+        if err != nil { continue }
+        result := output.String()
+        if len(result) > 0 {
+          if is_search == true {
+            current_row, err = strconv.Atoi(strings.TrimSpace(strings.Split(result, "\n")[0]))
+            current_row--; current_col = 0
+            break command_loop
+          }
+          read_stream(result[:len(result)-1])
+        };if current_row > len(text_buffer)-1 { current_row = len(text_buffer)-1 }
+        current_col = 0
+        break command_loop
+      case termbox.KeySpace: command += " "
+      case termbox.KeyBackspace: if len(command) > 0 { command = command[:len(command)-1] }
+      case termbox.KeyBackspace2: if len(command) > 0 { command = command[:len(command)-1] }
+    };if event.Ch != 0 {
+      command += string(event.Ch)
+      print_message(0, ROWS+1, termbox.ColorDefault, termbox.ColorDefault, command)
+    };
+    command_length := 0
+    for _,ch := range command { if ch > 0 { command_length++} }
+    termbox.SetCursor(command_length, ROWS+1)
+    for i := len(command); i < COLS; i++ { termbox.SetChar(i, ROWS+1, rune(' ')) }
+    termbox.Flush()
+  };ROWS++
+}

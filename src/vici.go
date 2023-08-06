@@ -25,7 +25,7 @@ func main() {
     termbox.Clear(DCOL, DCOL)
     doscroll()
     dorender()
-    termbox.SetCursor(curcl - offcl+lnwidth, curln - offrw)
+    termbox.SetCursor(curcl - offcl+lnwidth, curln - offrw-1)
     termbox.Flush()
     readkey()
   }

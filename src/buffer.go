@@ -199,9 +199,9 @@ func dorender() {
     if brow >= 1 && brow < len(buf) {
       lnnum := strconv.Itoa(brow)
       lnoff := lnwidth - len(lnnum)-1
-      msg(lnoff, row, CCOL, DCOL, lnnum)
+      msg(lnoff, row-1, CCOL, DCOL, lnnum)
       line := buf[brow].txt[offcl:]
-      msg(curcl-offcl+lnwidth, row, DCOL, DCOL, line)
+      msg(curcl-offcl+lnwidth, row-1, DCOL, DCOL, line)
     }
     hlline(0, row)
     dostat()
