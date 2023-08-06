@@ -1,8 +1,9 @@
 package main
 
-import "fmt"
+import "os"
 import "regexp"
 import "strings"
+import "github.com/nsf/termbox-go"
 
 /* getlist -- get list of line nums at lin[i], increment i */
 func getlist(lin string, i *int, status *stcode) stcode {
@@ -90,6 +91,7 @@ func getnum(lin string, i, num *int, status *stcode) stcode {
 
 /* optpat -- get optional pattern from lin[i], increment i */
 func optpat(lin string, i *int) stcode {
+  if *i >= len(lin)-1 { return ERR }
   if lin[*i+1:] == "\n" {
     *i = 0
   } else if lin[*i+1] == lin[*i] {    /* repeated delimiter */
@@ -126,7 +128,7 @@ func patscan (way rune, n *int) stcode {
         stat = OK
         done = true
       }
-    }  
+    }
     if *n == curln || done { break }
   }
   return stat
@@ -208,10 +210,14 @@ func docmd (lin string, i *int, status *stcode) stcode {
     }
   } else if lin[*i] == NEWLINE {
     if nlines == 0 { line2 = nextln(curln) }
-    *status = doprint(line2, line2, PCMD)
+    if line2 > 0 && line2 < len(buf) {
+      curln = line2
+      *status = OK
+    }
   } else if lin[*i] == QCMD {
     if lin[*i+1] == NEWLINE && nlines == 0 {
-      *status = ENDDATA
+      termbox.Close()
+      os.Exit(0)
     }
   } else if lin[*i] == ACMD {
     if lin[*i+1] == NEWLINE {
@@ -247,7 +253,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
   } else if lin[*i] == EQCMD {
     *i++
     if ckp(lin, i, &pflag, status) == OK {
-      fmt.Println(line2)
+      //fmt.Println(line2)
     }
   } else if lin[*i] == MCMD {
     *i++
@@ -289,16 +295,18 @@ func docmd (lin string, i *int, status *stcode) stcode {
       } else {
         *status = ERR
       }
-    } 
+    }
   } else if lin[*i] == SCMD {
     *i++
     if optpat(lin, i) == OK {
-      sub = strings.Split(lin[*i:], string(lin[*i]))[1]
-      *i += len(sub)+2
       if *i < len(lin) {
-        if ckp(lin, i, &pflag, status) == OK {
-          if setdef(1, lastln, status) == OK {
-            *status = subst(sub)
+        sub = strings.Split(lin[*i:], string(lin[*i]))[1]
+        *i += len(sub)+2
+        if *i < len(lin) {
+          if ckp(lin, i, &pflag, status) == OK {
+            if setdef(1, lastln, status) == OK {
+              *status = subst(sub)
+            }
           }
         }
       }
@@ -315,7 +323,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
     if nlines == 0 {
       if getfn(lin, i, &fil) == OK {
         savefile = fil
-        fmt.Println(savefile)
+        //fmt.Println(savefile)
         *status = OK
       }
     }
@@ -327,6 +335,13 @@ func docmd (lin string, i *int, status *stcode) stcode {
     if getfn(lin, i, &fil) == OK {
       if setdef(1, lastln, status) == OK {
         *status = dowrite(line1, line2, fil)
+      }
+    } else {
+      *i++
+      if savefile != "" && lin[*i] == 'q' {
+        dowrite(1, lastln, savefile)
+        termbox.Close()
+        os.Exit(0)
       }
     }
   }
@@ -343,6 +358,6 @@ func execcom(com string) {
   var status stcode
   lin = com + "\n"
   docmd(lin, &i, &status)
-  fmt.Println("execcom:", getst(status))
+  //fmt.Println("execcom:", getst(status))
 }
 

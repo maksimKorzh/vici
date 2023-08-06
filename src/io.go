@@ -1,7 +1,7 @@
 package main
 
 import "os"
-import "fmt"
+//import "fmt"
 import "bufio"
 import "strings"
 import "github.com/nsf/termbox-go"
@@ -19,7 +19,7 @@ func doread(n int, fil string) stcode {
     puttxt(line)
     count += len(line) + 1
   }
-  fmt.Println(count)
+  //fmt.Println(count)
   return OK
 }
 
@@ -39,7 +39,7 @@ func dowrite(n1, n2 int, fil string) stcode {
     count += len(writeln)
   }
   writer.Flush()
-  fmt.Println(count)
+  //fmt.Println(count)
   return OK
 }
 
@@ -60,19 +60,6 @@ func getfn(lin string, i *int, fil *string) stcode {
     savefile = *fil    /* save if no old one */
   }
   return stat
-}
-
-/* getline -- read user input from STDIN */
-func getline() string {
-  var line string
-  var ch rune
-  for ch != '\n' {
-    _, err := fmt.Scanf("%c", &ch)
-    if err != nil { panic(err) }
-    line += string(ch)
-  }
-  line = strings.Replace(line, "\r", "", -1)
-  return line
 }
 
 /* getev -- get termbox event (visual mode) */
@@ -108,37 +95,57 @@ func readkey() {
   }
 }
 
-/* cprompt -- invoke prompt to execute commands */
-func cprompt() {
-  rows--
-  termbox.Clear(DCOL, DCOL)
-  dorender()
-  dostat()
-  termbox.SetCursor(0, rows+1)
+/* getline -- invoke prompt to execute commands */
+func getline(prompt string) string {
+  doshow(false)
+  msg(0, rows+1, DCOL, DCOL, prompt)
+  termbox.SetCursor(1, rows+1)
   termbox.Flush()
   command := ""
-  cmdloop:
   for {
     ev := getev()
+    msg(0, rows+1, DCOL, DCOL, prompt)
     switch ev.Key {
-      case termbox.KeyEsc: break cmdloop
-      case termbox.KeyEnter:
-        break cmdloop
+      case termbox.KeyEsc: return ""
+      case termbox.KeyEnter: return command + "\n"
       case termbox.KeySpace: command += " "
       case termbox.KeyBackspace:
       case termbox.KeyBackspace2:
         if len(command) > 0 { command = command[:len(command)-1] }
-    };if ev.Ch != 0 {
+    }
+    if ev.Ch != 0 {
       command += string(ev.Ch)
-      msg(0, rows+1, DCOL, DCOL, command)
+      msg(1, rows+1, DCOL, DCOL, command)
     };
     cmdlen := 0
     for _,ch := range command { if ch > 0 { cmdlen++} }
-    termbox.SetCursor(cmdlen, rows+1)
-    for i := len(command); i < cols; i++ {
+    termbox.SetCursor(cmdlen+1, rows+1)
+    for i := len(command)+1; i < cols; i++ {
       termbox.SetChar(i, rows+1, rune(' '))
     }
     termbox.Flush()
+  }
+}
+
+/* cprompt -- invoke prompt to execute commands */
+func cprompt() {
+  rows--
+  for {
+    lin = getline(CPRMT)
+    if lin == "" || lin == "\n" { break }
+    i := 0;
+    cursave := curln;
+    var status stcode
+    if getlist(lin, &i, &status) == OK {
+      status = docmd(lin, &i, &status)
+    }
+    if status == ERR {
+      msg(0, rows+1, DCOL, DCOL, "?" + strings.Repeat(" ", cols-1))
+      curln = min(cursave, lastln)
+      termbox.SetCursor(1, rows+1)
+      termbox.Flush()
+      getev()
+    }
   }
   rows++
 }

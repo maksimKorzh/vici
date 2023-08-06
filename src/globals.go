@@ -10,8 +10,10 @@ type buftype struct {
 }
 
 /* const declarations for vici */
-const TABS = 4      /* TAB width */
-const TABR = ' '    /* TAB replace char */
+const TABS  = 4      /* TAB width */
+const TABR  = ' '    /* TAB replace char */
+const CPRMT = ":"    /* command prompt */
+const APRMT = ">"    /* text prompt */
 
 const (
   VIEW int = iota

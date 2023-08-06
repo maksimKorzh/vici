@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
+//import "os"
+//import "fmt"
+
 import "regexp"
 import "strings"
 import "strconv"
+import "github.com/nsf/termbox-go"
 
 /* setbuf (in memory) -- initialize line storage buffer */
 func setbuf() {
@@ -14,7 +17,7 @@ func setbuf() {
 
 /* doprint -- print lines n1 through n2 */
 func doprint (n1, n2 int, c rune) stcode {
-  if (n1 <= 0) {
+/*  if (n1 <= 0) {
     return ERR
   } else {
     for i := n1; i <= n2; i++ {
@@ -23,7 +26,7 @@ func doprint (n1, n2 int, c rune) stcode {
     }
     curln = n2;
     return OK
-  }
+  }*/return OK
 }
 
 /* lnappend -- append lines after "line" */
@@ -35,7 +38,10 @@ func lnappend(line int) stcode {
   stat = OK
   done = false
   for done == false && stat == OK {
-    inline = getline()
+    //msg(0, rows+1, DCOL, DCOL, ">" + strings.Repeat(" ", cols-1))
+    //termbox.SetCursor(1, rows+1)
+    //termbox.Flush()
+    inline = getline(APRMT)
     if inline[0] == PERIOD && inline[1] == NEWLINE {
       done = true
     } else if puttxt(inline[:len(inline)-1]) == ERR {
@@ -50,13 +56,16 @@ func lndelete(n1, n2 int, status *stcode) stcode {
   if n1 <= 0 {
     *status = ERR
   } else {
-    newbuf := make([]buftype, len(buf) - (n2 - n1))
+    newbuf := make([]buftype, len(buf) - (n2 - n1)-1)
     copy(newbuf[:n1], buf[:n1])
     copy(newbuf[n1:], buf[n2+1:])
     buf = newbuf
     lastln = lastln - (n2 - n1 + 1)
     curln = prevln(n1)
     *status = OK
+    //termbox.Close()
+    //fmt.Println("buflen:", len(buf), n1, n2)
+    //os.Exit(0)
   }
   return *status
 }
@@ -204,7 +213,6 @@ func dorender() {
       msg(curcl-offcl+lnwidth, row-1, DCOL, DCOL, line)
     }
     hlline(0, row)
-    dostat()
   }
 }
 
@@ -213,12 +221,25 @@ func dostat() {
   var modstat string
   fnlen := len(savefile)
   if fnlen > 24 { fnlen = 24 }
-  flstat := savefile[:fnlen] + " - " + strconv.Itoa(len(buf)) + " lines"
+  flstat := savefile[:fnlen] + " - " + strconv.Itoa(len(buf)-1) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
   if mode == EDIT { modstat = " EDIT: " } else { modstat = " VIEW: " }
-  curstat := " Row " + strconv.Itoa(curln+1) + ", Col " + strconv.Itoa(curcl+1) + " "
+  curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(curcl+1) + " "
   uspace := len(modstat) + len(flstat) + len(curstat)
   spaces := strings.Repeat(" ", cols - uspace)
   message := modstat + flstat + spaces + curstat
   msg(0, rows, NCOL, WCOL, message)
+}
+
+/* doshow -- update display */
+func doshow(resize bool) {
+  if resize {
+    cols, rows = termbox.Size(); rows--;
+    if cols < 78 { cols = 78 }
+  }
+  lnwidth = len(strconv.Itoa(len(buf)-1))+1
+  termbox.Clear(DCOL, DCOL)
+  doscroll()
+  dorender()
+  dostat()
 }

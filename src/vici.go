@@ -2,7 +2,6 @@ package main
 
 import "os"
 import "fmt"
-import "strconv"
 import "github.com/nsf/termbox-go"
 
 /* edit -- main routine for text editor */
@@ -19,12 +18,7 @@ func main() {
   err := termbox.Init()
   if err != nil { fmt.Println(err); os.Exit(1) }
   for {
-    lnwidth = len(strconv.Itoa(len(buf)))+1
-    cols, rows = termbox.Size(); rows--;
-    if cols < 78 { cols = 78 }
-    termbox.Clear(DCOL, DCOL)
-    doscroll()
-    dorender()
+    doshow(true)
     termbox.SetCursor(curcl - offcl+lnwidth, curln - offrw-1)
     termbox.Flush()
     readkey()
