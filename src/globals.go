@@ -82,6 +82,7 @@ var line2 int         /* second line number */
 var nlines int        /* # of line numbers specified */
 var curln int         /* current line -- value of dot */
 var curcl int         /* current column (visual mode) */
+var tabcl int         /* current column to render assuming TAB chars */
 var lastln int        /* last line -- value of $ */
 
 var pat string        /* pattern */

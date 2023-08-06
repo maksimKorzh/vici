@@ -89,8 +89,13 @@ func readkey() {
     switch ev.Key {
       case termbox.KeyArrowUp: if curln > 1 { curln = prevln(curln) }
       case termbox.KeyArrowDown: if curln < lastln { curln = nextln(curln) }
+      case termbox.KeyArrowLeft: curcl = prevcl(curcl)
+      case termbox.KeyArrowRight: curcl = nextcl(curcl)
     }
-    //if current_col > len(text_buffer[current_row]) { current_col = len(text_buffer[current_row]) }
+    //if curcl > len(buf[curln].txt) {
+    //  curcl = len(buf[curln].txt)
+    //  tabcl = curcl
+    //}
   }
 }
 

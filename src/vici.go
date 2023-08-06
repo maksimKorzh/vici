@@ -21,28 +21,11 @@ func main() {
   for {
     doshow(true)
     if len(buf) > 1 {
-      termbox.SetCursor(curcl - offcl+lnwidth, curln - offrw-1)
+      termbox.SetCursor(tabcl - offcl+lnwidth, curln - offrw-1)
     } else {
-      termbox.SetCursor(curcl - offcl+lnwidth, 0)
+      termbox.SetCursor(tabcl - offcl+lnwidth, 0)
     }
     termbox.Flush()
     readkey()
   }
-
-/*  var cursave, i int
-  var status stcode
-  for {
-    lin = getline()
-    i = 0;
-    cursave = curln;
-    if getlist(lin, &i, &status) == OK {
-      status = docmd(lin, &i, &status)
-    }
-    if status == ERR {
-      fmt.Println("?")
-      curln = min(cursave, lastln)
-    } else if status == ENDDATA {
-      break
-    }
-  }*/
 }

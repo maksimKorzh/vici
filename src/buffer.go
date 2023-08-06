@@ -1,8 +1,5 @@
 package main
 
-//import "os"
-//import "fmt"
-
 import "regexp"
 import "strings"
 import "strconv"
@@ -38,9 +35,6 @@ func lnappend(line int) stcode {
   stat = OK
   done = false
   for done == false && stat == OK {
-    //msg(0, rows+1, DCOL, DCOL, ">" + strings.Repeat(" ", cols-1))
-    //termbox.SetCursor(1, rows+1)
-    //termbox.Flush()
     inline = getline(APRMT)
     if inline[0] == PERIOD && inline[1] == NEWLINE {
       done = true
@@ -63,9 +57,6 @@ func lndelete(n1, n2 int, status *stcode) stcode {
     lastln = lastln - (n2 - n1 + 1)
     curln = prevln(n1)
     *status = OK
-    //termbox.Close()
-    //fmt.Println("buflen:", len(buf), n1, n2)
-    //os.Exit(0)
   }
   return *status
 }
@@ -172,6 +163,24 @@ func prevln(n int) int {
   }
 }
 
+/* nextcl -- get next col */
+func nextcl(n int) int {
+  if curcl < len(buf[curln].txt) {
+    return n + 1
+  } else {
+    return len(buf[curln].txt)
+  }
+}
+
+/* prevcl -- get prev col */
+func prevcl(n int) int {
+  if curcl > 0 {
+    return n - 1
+  } else {
+    return 0
+  }
+}
+
 /* subst -- substitute pattern with "sub" */
 func subst(sub string) stcode {
   var line string
@@ -193,24 +202,42 @@ func subst(sub string) stcode {
   return stat
 }
 
+/* cltab -- convert curcl to tabcl */
+func cltab() int {
+  rx := 0;
+  for col := 0; col < curcl; col++ {
+    if buf[curln].txt[col] == '\t' { rx += (TABS-1) }//{ rx += (TABS - 1) - (rx % TABS) }
+    rx++;
+  }
+  return rx
+}
+
 /* doscroll -- scroll buffer based on offrw and offcl (visual mode) */
 func doscroll() {
+  tabcl = 0
+  if curln < len(buf) { tabcl = cltab() }
   if curln < offrw+1 { offrw = curln-1 }
-  if curcl < offcl { offcl = curcl }
+  if tabcl < offcl { offcl = tabcl }
   if curln >= offrw + rows+1 { offrw = curln-rows }
-  if curcl >= offcl + cols-lnwidth { offcl = curcl-cols+lnwidth+1 }
+  if tabcl >= offcl + cols-lnwidth { offcl = tabcl-cols+lnwidth+1 }
 }
 
 /* dorender -- display buffer content (visual mode) */
 func dorender() {
+  dbuf := make([]buftype, len(buf))
+  copy(dbuf, buf)
+  for row := 1; row < len(buf); row++ {
+    dbuf[row].txt = strings.Replace(dbuf[row].txt, "\t", strings.Repeat(" ", TABS), -1)
+  }
   for row := 0; row <= rows; row++ {
     brow := row + offrw
     if brow >= 1 && brow < len(buf) {
       lnnum := strconv.Itoa(brow)
       lnoff := lnwidth - len(lnnum)-1
       msg(lnoff, row-1, CCOL, DCOL, lnnum)
-      line := buf[brow].txt[offcl:]
-      msg(curcl-offcl+lnwidth, row-1, DCOL, DCOL, line)
+      if offcl >= len(buf[brow].txt) { continue }
+      line := dbuf[brow].txt[offcl:]
+      msg(lnwidth, row-1, DCOL, DCOL, line)
     } else if row-1 != 0 {
       msg(0, row-1, BCOL, DCOL, "*")
     }
@@ -226,7 +253,7 @@ func dostat() {
   flstat := savefile[:fnlen] + " - " + strconv.Itoa(len(buf)-1) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
   if mode == EDIT { modstat = " EDIT: " } else { modstat = " VIEW: " }
-  curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(curcl+1) + " "
+  curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "
   uspace := len(modstat) + len(flstat) + len(curstat)
   spaces := strings.Repeat(" ", cols - uspace)
   message := modstat + flstat + spaces + curstat
