@@ -18,6 +18,7 @@ func doread(n int, fil string) stcode {
     puttxt(line)
     count += len(line) + 1
   }
+  dirty = false
   return OK
 }
 
@@ -37,6 +38,7 @@ func dowrite(n1, n2 int, fil string) stcode {
     count += len(writeln)
   }
   writer.Flush()
+  dirty = false
   return OK
 }
 
@@ -81,6 +83,7 @@ func readkey() {
     } else {
       switch ev.Ch {
         case 'q': execcom("q")
+        case 'w': execcom("w")
         case 'e': mode = EDIT
         case ':': cprompt()
       }
@@ -100,7 +103,7 @@ func readkey() {
       switch ev.Key {
         case termbox.KeySpace: inrune(' ')
         case termbox.KeyTab: for i := 0; i < TABS; i++ { inrune(' ') }
-        case termbox.KeyBackspace:
+        case termbox.KeyBackspace: dlrune()
         case termbox.KeyBackspace2: dlrune()
         case termbox.KeyEnter: inrune('\n')
       }
@@ -120,12 +123,13 @@ func getline(prompt string) string {
     ev := getev()
     msg(0, rows+1, DCOL, DCOL, prompt)
     switch ev.Key {
+      case termbox.KeyArrowUp: if curln > 1 { curln = prevln(curln) }; return ""
+      case termbox.KeyArrowDown: if curln < lastln { curln = nextln(curln) }; return ""
       case termbox.KeyEsc: return ""
       case termbox.KeyEnter: return command + "\n"
       case termbox.KeySpace: command += " "
-      case termbox.KeyBackspace:
-      case termbox.KeyBackspace2:
-        if len(command) > 0 { command = command[:len(command)-1] }
+      case termbox.KeyBackspace: if len(command) > 0 { command = command[:len(command)-1] }
+      case termbox.KeyBackspace2: if len(command) > 0 { command = command[:len(command)-1] }
     }
     if ev.Ch != 0 {
       command += string(ev.Ch)

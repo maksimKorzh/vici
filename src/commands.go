@@ -345,10 +345,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
       }
     }
   }
-  /* else status is ERR */
-  if *status == OK && pflag {
-    *status = doprint(curln, curln, PCMD)
-  }
+  if *status == OK { dirty = true }
   return *status
 }
 
