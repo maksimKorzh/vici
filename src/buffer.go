@@ -28,10 +28,17 @@ func doprint (n1, n2 int, c rune) stcode {
 
 /* inrune -- insert char into line */
 func inrune(c rune) {
-  lline := buf[curln].txt[:curcl]
-  rline := buf[curln].txt[curcl:]
-  buf[curln].txt = lline + string(c) + rline
-  curcl = nextcl(curcl)
+  if c != '\n' {
+    lline := buf[curln].txt[:curcl]
+    rline := buf[curln].txt[curcl:]
+    buf[curln].txt = lline + string(c) + rline
+    curcl = nextcl(curcl)
+  } else {
+    lline := buf[curln].txt[curcl:]
+    buf[curln].txt = buf[curln].txt[:curcl]
+    puttxt(lline)
+    curcl = 0
+  }
 }
 
 /* dlrune -- delete char in line */
@@ -41,6 +48,13 @@ func dlrune() {
     rline := buf[curln].txt[curcl:]
     buf[curln].txt = lline + rline
     curcl = prevcl(curcl)
+  } else if curln > 1 {
+    lline := buf[curln-1].txt
+    rline := buf[curln].txt[curcl:]
+    stat := OK
+    lndelete(curln, curln, &stat)
+    curcl = len(buf[curln].txt)
+    buf[curln].txt = lline + rline
   }
 }
 

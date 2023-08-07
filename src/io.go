@@ -37,7 +37,6 @@ func dowrite(n1, n2 int, fil string) stcode {
     count += len(writeln)
   }
   writer.Flush()
-  //fmt.Println(count)
   return OK
 }
 
@@ -103,6 +102,7 @@ func readkey() {
         case termbox.KeyTab: for i := 0; i < TABS; i++ { inrune(' ') }
         case termbox.KeyBackspace:
         case termbox.KeyBackspace2: dlrune()
+        case termbox.KeyEnter: inrune('\n')
       }
     }
     if curcl > len(buf[curln].txt) { curcl = len(buf[curln].txt) }
