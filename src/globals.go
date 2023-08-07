@@ -14,6 +14,8 @@ const TABS  = 4      /* TAB width */
 const TABR  = ' '    /* TAB replace char */
 const CPRMT = ":"    /* command prompt */
 const APRMT = ">"    /* text prompt */
+const SCRDN = ".-4"  /* command to execute on PageDown */
+const SCRUP = ".+4"  /* command to execute on PageUp */
 
 const (
   VIEW int = iota

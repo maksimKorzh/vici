@@ -357,7 +357,7 @@ func execcom(com string) {
   var i int
   var status stcode
   lin = com + "\n"
-  docmd(lin, &i, &status)
-  //fmt.Println("execcom:", getst(status))
+  if getlist(lin, &i, &status) == OK {
+    docmd(lin, &i, &status)
+  }
 }
-

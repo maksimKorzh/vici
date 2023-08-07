@@ -26,6 +26,24 @@ func doprint (n1, n2 int, c rune) stcode {
   }*/return OK
 }
 
+/* inrune -- insert char into line */
+func inrune(c rune) {
+  lline := buf[curln].txt[:curcl]
+  rline := buf[curln].txt[curcl:]
+  buf[curln].txt = lline + string(c) + rline
+  curcl = nextcl(curcl)
+}
+
+/* dlrune -- delete char in line */
+func dlrune() {
+  if curcl > 0 {
+    lline := buf[curln].txt[:curcl-1]
+    rline := buf[curln].txt[curcl:]
+    buf[curln].txt = lline + rline
+    curcl = prevcl(curcl)
+  }
+}
+
 /* lnappend -- append lines after "line" */
 func lnappend(line int) stcode {
   var inline string
@@ -251,8 +269,8 @@ func dorender() {
     } else if row-1 != 0 {
       msg(0, row-1, BCOL, DCOL, "*")
     }
-    hlline(0, row)
   }
+  hlline(curln-offrw)
 }
 
 /* dostat -- display status bar */

@@ -77,11 +77,12 @@ func readkey() {
     mode = VIEW
   } else if ev.Ch != 0 {
     if mode == EDIT {
-      //insert_rune(ev)
+      inrune(ev.Ch)
       dirty = true
     } else {
       switch ev.Ch {
-        case 'q': termbox.Close(); os.Exit(0)
+        case 'q': execcom("q")
+        case 'e': mode = EDIT
         case ':': cprompt()
       }
     }
@@ -91,6 +92,18 @@ func readkey() {
       case termbox.KeyArrowDown: if curln < lastln { curln = nextln(curln) }
       case termbox.KeyArrowLeft: curcl = prevcl(curcl)
       case termbox.KeyArrowRight: curcl = nextcl(curcl)
+      case termbox.KeyHome: curcl = 0
+      case termbox.KeyEnd: curcl = len(buf[curln].txt)
+      case termbox.KeyPgup: execcom(SCRDN)
+      case termbox.KeyPgdn: execcom(SCRUP)
+    }
+    if mode == EDIT {
+      switch ev.Key {
+        case termbox.KeySpace: inrune(' ')
+        case termbox.KeyTab: for i := 0; i < TABS; i++ { inrune(' ') }
+        case termbox.KeyBackspace:
+        case termbox.KeyBackspace2: dlrune()
+      }
     }
     if curcl > len(buf[curln].txt) { curcl = len(buf[curln].txt) }
   }
