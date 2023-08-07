@@ -72,7 +72,9 @@ func lnappend(line int) stcode {
   done = false
   for done == false && stat == OK {
     inline = getline(APRMT)
-    if inline[0] == PERIOD && inline[1] == NEWLINE {
+    if inline == "" {
+      stat = ERR
+    } else if inline[0] == PERIOD && inline[1] == NEWLINE {
       done = true
     } else if puttxt(inline[:len(inline)-1]) == ERR {
       stat = ERR
