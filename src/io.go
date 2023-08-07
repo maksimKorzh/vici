@@ -92,10 +92,7 @@ func readkey() {
       case termbox.KeyArrowLeft: curcl = prevcl(curcl)
       case termbox.KeyArrowRight: curcl = nextcl(curcl)
     }
-    //if curcl > len(buf[curln].txt) {
-    //  curcl = len(buf[curln].txt)
-    //  tabcl = curcl
-    //}
+    if curcl > len(buf[curln].txt) { curcl = len(buf[curln].txt) }
   }
 }
 

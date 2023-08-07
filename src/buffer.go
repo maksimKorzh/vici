@@ -168,7 +168,12 @@ func nextcl(n int) int {
   if curcl < len(buf[curln].txt) {
     return n + 1
   } else {
-    return len(buf[curln].txt)
+    if curln < lastln {
+      curln = nextln(curln)
+      return 0
+    } else {
+      return len(buf[curln].txt)
+    }
   }
 }
 
@@ -177,7 +182,12 @@ func prevcl(n int) int {
   if curcl > 0 {
     return n - 1
   } else {
-    return 0
+    if curln > 1 {
+      curln = prevln(curln)
+      return len(buf[curln].txt)
+    } else {
+      return 0
+    }
   }
 }
 
@@ -206,7 +216,7 @@ func subst(sub string) stcode {
 func cltab() int {
   rx := 0;
   for col := 0; col < curcl; col++ {
-    if buf[curln].txt[col] == '\t' { rx += (TABS-1) }//{ rx += (TABS - 1) - (rx % TABS) }
+    if buf[curln].txt[col] == '\t' { rx = rx + (TABS-1) }//{ rx += (TABS - 1) - (rx % TABS) }
     rx++;
   }
   return rx
@@ -215,7 +225,7 @@ func cltab() int {
 /* doscroll -- scroll buffer based on offrw and offcl (visual mode) */
 func doscroll() {
   tabcl = 0
-  if curln < len(buf) { tabcl = cltab() }
+  if curln <= lastln { tabcl = cltab() }
   if curln < offrw+1 { offrw = curln-1 }
   if tabcl < offcl { offcl = tabcl }
   if curln >= offrw + rows+1 { offrw = curln-rows }
@@ -235,7 +245,7 @@ func dorender() {
       lnnum := strconv.Itoa(brow)
       lnoff := lnwidth - len(lnnum)-1
       msg(lnoff, row-1, CCOL, DCOL, lnnum)
-      if offcl >= len(buf[brow].txt) { continue }
+      if offcl >= len(dbuf[brow].txt) { continue }
       line := dbuf[brow].txt[offcl:]
       msg(lnwidth, row-1, DCOL, DCOL, line)
     } else if row-1 != 0 {
