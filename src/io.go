@@ -20,7 +20,6 @@ func doread(n int, fil string) stcode {
   }
   if count == 0 { puttxt("") }
   dirty = false
-  curln = 1
   return OK
 }
 
