@@ -19,6 +19,7 @@ func doread(n int, fil string) stcode {
     count += len(line) + 1
   }
   dirty = false
+  curln = 1
   return OK
 }
 
@@ -79,11 +80,27 @@ func readkey() {
   } else if ev.Ch != 0 {
     if mode == EDIT {
       inrune(ev.Ch)
-      dirty = true
     } else {
       switch ev.Ch {
         case 'q': execcom("q")
         case 'w': execcom("w")
+        case '1': execcom("1")
+        case '$': execcom("$")
+        case 'y': execcom("y")
+        case 'p':
+          if curln > 1 {
+            curln = prevln(curln)
+            execcom("p")
+          } else {
+            execcom("p")
+          }
+        case 'd':
+          if curln > 1 {
+            execcom("d")
+            if curln != lastln { curln = prevln(curln) }
+          } else if curln == 1 {
+            buf[curln].txt = ""
+          }
         case 'e': mode = EDIT
         case ':': cprompt()
       }

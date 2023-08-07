@@ -6,7 +6,6 @@ import "github.com/nsf/termbox-go"
 type stcode int
 type buftype struct {
   txt string   /* text of line */
-  mark bool    /* mark of line */
 }
 
 /* const declarations for vici */
@@ -42,7 +41,6 @@ const (
   MINUS    = '-'
   NEWLINE  = '\n'
   PCMD     = 'p'
-  NCMD     = 'n'
   QCMD     = 'q'
   ACMD     = 'a'
   DCMD     = 'd'
@@ -52,7 +50,6 @@ const (
   MCMD     = 'm'
   TCMD     = 't'
   YCMD     = 'y'
-  XCMD     = 'x'
   SCMD     = 's'
   ECMD     = 'e'
   FCMD     = 'f'
@@ -67,6 +64,8 @@ const (
   BCOL = termbox.ColorBlue
   GCOL = termbox.ColorGreen
   CCOL = termbox.ColorCyan
+  RCOL = termbox.ColorRed
+  BOLD = termbox.AttrBold
 )
 
 /* variables for vici */

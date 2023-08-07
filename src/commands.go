@@ -202,13 +202,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
     nlines = 1
     *i++
   }
-  if lin[*i] == PCMD || lin[*i] == NCMD {
-    if lin[*i+1] == NEWLINE {
-      if setdef(curln, curln, status) == OK {
-        *status = doprint(line1, line2, rune(lin[*i]))
-      }
-    }
-  } else if lin[*i] == NEWLINE {
+  if lin[*i] == NEWLINE {
     if nlines == 0 { line2 = nextln(curln) }
     if line2 > 0 && line2 < len(buf) {
       curln = line2
@@ -222,12 +216,14 @@ func docmd (lin string, i *int, status *stcode) stcode {
   } else if lin[*i] == ACMD {
     if lin[*i+1] == NEWLINE {
       *status = lnappend(line2)
+      if *status == OK { dirty = true }
     }
   } else if lin[*i] == CCMD {
     if lin[*i+1] == NEWLINE {
       if setdef(curln, curln, status) == OK {
         if lndelete(line1, line2, status) == OK {
           *status = lnappend(prevln(line1))
+          if *status == OK { dirty = true }
         }
       }
     }
@@ -235,7 +231,9 @@ func docmd (lin string, i *int, status *stcode) stcode {
     *i++
     if ckp(lin, i, &pflag, status) == OK {
       if setdef(curln, curln, status) == OK {
+        cp(line1, line2)
         if lndelete(line1, line2, status) == OK {
+          dirty = true
           if nextln(curln) != 0 {
             curln = nextln(curln)
           }
@@ -244,6 +242,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
     }
   } else if lin[*i] == ICMD {
     if lin[*i+1] == NEWLINE {
+      dirty = true
       if line2 == 0 {
         *status = lnappend(0)
       } else {
@@ -262,6 +261,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
       if ckp(lin, i, &pflag, status) == OK {
         if setdef(curln, curln, status) == OK {
           *status = move(&line3)
+          if *status == OK { dirty = true }
         }
       }
     }
@@ -272,6 +272,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
       if ckp(lin, i, &pflag, status) == OK {
         if setdef(curln, curln, status) == OK {
           *status = dup(&line3)
+          if *status == OK { dirty = true }
         }
       }
     }
@@ -283,7 +284,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
         *status = OK
       }
     }
-  } else if lin[*i] == XCMD {
+  } else if lin[*i] == PCMD {
     *i++
     if ckp(lin, i, &pflag, status) == OK {
       curln = line2
@@ -291,6 +292,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
         for i := 0; i < len(cpb); i++ {
           puttxt(cpb[i].txt)
         }
+        dirty = true
         *status = OK
       } else {
         *status = ERR
@@ -306,6 +308,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
           if ckp(lin, i, &pflag, status) == OK {
             if setdef(1, lastln, status) == OK {
               *status = subst(sub)
+              if *status == OK { dirty = true }
             }
           }
         }
@@ -323,13 +326,13 @@ func docmd (lin string, i *int, status *stcode) stcode {
     if nlines == 0 {
       if getfn(lin, i, &fil) == OK {
         savefile = fil
-        //fmt.Println(savefile)
         *status = OK
       }
     }
   } else if lin[*i] == RCMD {
     if getfn(lin, i, &fil) == OK {
       *status = doread(line2, fil)
+      if *status == OK { dirty = true }
     }
   } else if lin[*i] == WCMD {
     if getfn(lin, i, &fil) == OK {
@@ -345,7 +348,6 @@ func docmd (lin string, i *int, status *stcode) stcode {
       }
     }
   }
-  if *status == OK { dirty = true }
   return *status
 }
 

@@ -7,7 +7,7 @@ import "github.com/nsf/termbox-go"
 
 /* setbuf (in memory) -- initialize line storage buffer */
 func setbuf() {
-  buf = []buftype{buftype{txt: "", mark: false},}
+  buf = []buftype{buftype{txt: ""},}
   curln = 0;
   lastln = 0
 }
@@ -28,6 +28,7 @@ func doprint (n1, n2 int, c rune) stcode {
 
 /* inrune -- insert char into line */
 func inrune(c rune) {
+  dirty = true
   if c != '\n' {
     lline := buf[curln].txt[:curcl]
     rline := buf[curln].txt[curcl:]
@@ -43,6 +44,7 @@ func inrune(c rune) {
 
 /* dlrune -- delete char in line */
 func dlrune() {
+  dirty = true
   if curcl > 0 {
     lline := buf[curln].txt[:curcl-1]
     rline := buf[curln].txt[curcl:]
@@ -57,6 +59,8 @@ func dlrune() {
     buf[curln].txt = lline + rline
   }
 }
+
+/* detmark -- get marked lines */
 
 /* lnappend -- append lines after "line" */
 func lnappend(line int) stcode {
@@ -99,7 +103,7 @@ func puttxt (lin string) stcode {
   curln++
   newbuf := make([]buftype, lastln+1)
   copy(newbuf[:curln], buf[:curln])
-  newbuf[curln] = buftype{ txt: lin, mark: false }
+  newbuf[curln] = buftype{ txt:lin }
   copy(newbuf[curln+1:], buf[curln:])
   buf = newbuf
   return OK
@@ -124,7 +128,7 @@ func move(line3 *int) stcode {
 func cp(n1, n2 int) {
   cpb = []buftype{}
   for i := n1; i <= n2; i++ {
-    cpb = append(cpb, buftype{txt: buf[i].txt, mark: buf[i].mark })
+    cpb = append(cpb, buftype{ txt:buf[i].txt })
   }
 }
 
@@ -248,8 +252,10 @@ func subst(sub string) stcode {
 func cltab() int {
   rx := 0;
   for col := 0; col < curcl; col++ {
-    if buf[curln].txt[col] == '\t' { rx = rx + (TABS-1) }//{ rx += (TABS - 1) - (rx % TABS) }
-    rx++;
+    if col < len(buf[curln].txt) {
+      if buf[curln].txt[col] == '\t' { rx = rx + (TABS-1) }
+      rx++;
+    }
   }
   return rx
 }
