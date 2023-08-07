@@ -18,6 +18,7 @@ func doread(n int, fil string) stcode {
     puttxt(line)
     count += len(line) + 1
   }
+  if count == 0 { puttxt("") }
   dirty = false
   curln = 1
   return OK

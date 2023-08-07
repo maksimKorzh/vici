@@ -6,13 +6,11 @@ import "github.com/nsf/termbox-go"
 
 /* edit -- main routine for text editor */
 func main() {
+  setbuf()
   if len(os.Args) > 1 {
-    setbuf()
     savefile = os.Args[1]
-    status := doread(0, savefile)
-    if status == ERR { fmt.Println("?") }
+    doread(0, savefile)
   } else {
-    setbuf()
     savefile = "out.txt"
   }
   if lastln == 0 { puttxt("") }
