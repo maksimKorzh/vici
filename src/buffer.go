@@ -303,7 +303,8 @@ func dostat() {
   if mode == EDIT { modstat = " EDIT: " } else { modstat = " VIEW: " }
   curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "
   uspace := len(modstat) + len(flstat) + len(curstat)
-  spaces := strings.Repeat(" ", cols - uspace)
+  spaces := ""
+  if cols - uspace >= 1 { spaces = strings.Repeat(" ", cols - uspace) }
   message := modstat + flstat + spaces + curstat
   msg(0, rows, NCOL, WCOL, message)
 }
@@ -311,8 +312,9 @@ func dostat() {
 /* doshow -- update display */
 func doshow(resize bool) {
   if resize {
-    cols, rows = termbox.Size(); rows--;
-    if cols < 78 { cols = 78 }
+    cols, rows = termbox.Size()
+    if cols < 10 && rows < 3 { return }
+    if rows > 2 { rows-- }
   }
   lnwidth = len(strconv.Itoa(len(buf)-1))+1
   termbox.Clear(DCOL, DCOL)
