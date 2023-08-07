@@ -10,7 +10,11 @@ func hlline(row int) {
   for col := 0; col < cols; col++ {
     if len(buf) > 1 && curln > 0 {
       cell := termbox.GetCell(col, row-1)
-      termbox.SetCell(col, row-1, cell.Ch, DCOL, BCOL)
+      if col == tabcl - offcl+lnwidth {
+        termbox.SetCell(col, row-1, cell.Ch, DCOL, RCOL)
+      } else {
+        termbox.SetCell(col, row-1, cell.Ch, DCOL, BCOL)
+      }
     } else {
       lnoff := lnwidth - 2
       msg(col, row, DCOL, BCOL, strings.Repeat(" ", lnoff) + "1" + strings.Repeat(" ", cols-1))

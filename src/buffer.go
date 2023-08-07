@@ -60,7 +60,11 @@ func dlrune() {
   }
 }
 
-/* detmark -- get marked lines */
+/* lnjoin -- join current line to previous */
+func lnjoin() {
+  for curcl > 0 { dlrune() }
+  if curln > 1 { dlrune() }
+}
 
 /* lnappend -- append lines after "line" */
 func lnappend(line int) stcode {

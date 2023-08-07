@@ -88,6 +88,7 @@ func readkey() {
         case '1': execcom("1")
         case '$': execcom("$")
         case 'y': execcom("y")
+        case 'j': lnjoin()
         case 'p':
           if curln > 1 {
             curln = prevln(curln)

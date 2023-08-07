@@ -42,11 +42,12 @@ const (
   NEWLINE  = '\n'
   PCMD     = 'p'
   QCMD     = 'q'
+  JCMD     = 'j'
+  NCMD     = 'n'
   ACMD     = 'a'
   DCMD     = 'd'
   CCMD     = 'c'
   ICMD     = 'i'
-  EQCMD    = '='
   MCMD     = 'm'
   TCMD     = 't'
   YCMD     = 'y'
@@ -65,6 +66,8 @@ const (
   GCOL = termbox.ColorGreen
   CCOL = termbox.ColorCyan
   RCOL = termbox.ColorRed
+  YCOL = termbox.ColorYellow
+  MCOL = termbox.ColorMagenta
   BOLD = termbox.AttrBold
 )
 

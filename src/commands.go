@@ -129,6 +129,7 @@ func patscan (way rune, n *int) stcode {
       stat = ERR
     } else {
       if r.MatchString(line) {
+        curcl = r.FindStringIndex(line)[0]
         stat = OK
         done = true
       }
@@ -253,11 +254,12 @@ func docmd (lin string, i *int, status *stcode) stcode {
         *status = lnappend(prevln(line2))
       }
     }
-  } else if lin[*i] == EQCMD {
-    *i++
-    if ckp(lin, i, &pflag, status) == OK {
-      //fmt.Println(line2)
-    }
+  } else if lin[*i] == JCMD {
+    lnjoin()
+    *status = OK
+  } else if lin[*i] == NCMD {
+    inrune('\n')
+    *status = OK
   } else if lin[*i] == MCMD {
     *i++
     if getone(lin, i, &line3, status) == ENDDATA { *status = ERR }
