@@ -14,8 +14,8 @@ func main() {
   } else {
     setbuf()
     savefile = "out.txt"
-    puttxt("")
   }
+  if lastln == 0 { puttxt("") }
   err := termbox.Init()
   if err != nil { fmt.Println(err); os.Exit(1) }
   curln = 1
