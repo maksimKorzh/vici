@@ -292,7 +292,11 @@ func dorender() {
       msg(lnoff, row-1, CCOL, DCOL, lnnum)
       if offcl >= len(dbuf[brow].txt) { continue }
       line := dbuf[brow].txt[offcl:]
-      msg(lnwidth, row-1, DCOL, DCOL, line)
+      if hl == 1 {
+        hlsyntax(lnwidth, row-1, line)
+      } else {
+        msg(lnwidth, row-1, DCOL, DCOL, line)
+      } 
     } else if row-1 != 0 {
       msg(0, row-1, BCOL, DCOL, "*")
     }

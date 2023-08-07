@@ -85,6 +85,7 @@ func readkey() {
       switch ev.Ch {
         case 'q': execcom("q")
         case 'w': execcom("w")
+        case 'h': hl ^= 1
         case '1': execcom("1")
         case '$': execcom("$")
         case 'y': execcom("y")

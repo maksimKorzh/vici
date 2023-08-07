@@ -72,6 +72,18 @@ const (
 )
 
 /* variables for vici */
+var KEYWORDS = []string {
+  "import", "as", "from", "in",
+  "and", "or",
+  "try", "except", "pass",
+  "if", "else", "elif",
+  "for", "do", "while",
+  "var", "const", "iota",
+  "int", "char", "float", "double", "rune",
+  "func", "function", "def",
+  "return",
+}
+
 var buf[]buftype      /* editor's buffer */
 var cpb[]buftype      /* copy buffer */
 

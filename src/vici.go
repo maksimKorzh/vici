@@ -18,6 +18,7 @@ func main() {
   if err != nil { fmt.Println(err); os.Exit(1) }
   curln = 1
   dirty = false
+  hl = 1
   for {
     doshow(true)
     if len(buf) > 1 {
