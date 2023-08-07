@@ -262,6 +262,7 @@ func cltab() int {
 
 /* doscroll -- scroll buffer based on offrw and offcl (visual mode) */
 func doscroll() {
+  if curln < 1 { return }
   tabcl = 0
   if curln <= lastln { tabcl = cltab() }
   if curln < offrw+1 { offrw = curln-1 }
@@ -277,7 +278,7 @@ func dorender() {
   for row := 1; row < len(buf); row++ {
     dbuf[row].txt = strings.Replace(dbuf[row].txt, "\t", strings.Repeat(" ", TABS), -1)
   }
-  for row := 0; row <= rows; row++ {
+  for row := 1; row <= rows; row++ {
     brow := row + offrw
     if brow >= 1 && brow < len(buf) {
       lnnum := strconv.Itoa(brow)

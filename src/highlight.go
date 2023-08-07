@@ -8,11 +8,12 @@ func hlline(row int) {
   cols, rows := termbox.Size(); rows--
   if row > rows { return }
   for col := 0; col < cols; col++ {
-    if len(buf) > 1 {
+    if len(buf) > 1 && curln > 0 {
       cell := termbox.GetCell(col, row-1)
       termbox.SetCell(col, row-1, cell.Ch, DCOL, BCOL)
     } else {
-      msg(col, row, DCOL, BCOL, "1" + strings.Repeat(" ", cols-1))
+      lnoff := lnwidth - 2
+      msg(col, row, DCOL, BCOL, strings.Repeat(" ", lnoff) + "1" + strings.Repeat(" ", cols-1))
       break
     }
   }

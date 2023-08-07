@@ -81,7 +81,11 @@ func getnum(lin string, i, num *int, status *stcode) stcode {
       if (optpat(lin, i) == ERR) {
         *status = ERR  /* build pattern */
       } else {
-        *status = patscan(rune(lin[*i]), num)
+        if *i < len(lin) {
+          *status = patscan(rune(lin[*i]), num)
+        } else {
+          *status = ERR
+        }
       }
     } else { *status = ENDDATA }
   }
