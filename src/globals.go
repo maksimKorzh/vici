@@ -79,7 +79,7 @@ var KEYWORDS = []string {
   "if", "else", "elif",
   "for", "do", "while",
   "var", "const", "iota", "type",
-  "int", "char", "float", "double", "rune",
+  "int", "char", "float", "double", "rune", "byte",
   "func", "function", "def",
   "return",
 }
