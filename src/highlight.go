@@ -73,8 +73,11 @@ func pcomm(line string, i *int) string {
 
 /* hlsyntax -- highlight syntax */
 func hlsyntax(col, row int, line string) {
-
   i := 0
+  if len(line) != len([]rune(line)) {
+    msg(col, row, DCOL, DCOL, line)
+    return
+  }
   for i < len(line) {
     j := i
     if line[i] >= '0' && line[i] <= '9' {

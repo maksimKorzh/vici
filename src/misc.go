@@ -1,5 +1,7 @@
 package main
 
+import "os"
+import "fmt"
 import "github.com/nsf/termbox-go"
 import "github.com/mattn/go-runewidth"
 
@@ -24,6 +26,13 @@ func ctoi(s string, i *int) int {
     *i++
   }
   return sign * n
+}
+
+/* dbdie -- print debug info and die */
+func dbdie(args ...interface{}) {
+  termbox.Close()
+  fmt.Println(args...)
+  os.Exit(0)
 }
 
 /* getst -- get status code description */

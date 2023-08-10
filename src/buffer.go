@@ -3,6 +3,7 @@ package main
 import "regexp"
 import "strings"
 import "strconv"
+import "unicode/utf8"
 import "github.com/nsf/termbox-go"
 
 /* setbuf (in memory) -- initialize line storage buffer */
@@ -26,17 +27,40 @@ func doprint (n1, n2 int, c rune) stcode {
   }*/return OK
 }
 
+/* rw -- get current rune width */
+func rw(i int) int {
+  runes := []rune(buf[curln].txt + " ")
+  return utf8.RuneLen(runes[i])
+}
+
+/* lnlen -- get length of current buffer row */
+func lnlen() int {
+  runes := []rune(buf[curln].txt)
+  return len(runes)
+}
+
+/* cloff -- convert curcl to offset index */
+func cloff(i int) int {
+  index := 0
+  for offset := range buf[curln].txt + " " {
+    if index == i { return offset }
+    index++
+  }
+  return 0
+}
+
 /* inrune -- insert char into line */
 func inrune(c rune) {
   dirty = true
+  offset := cloff(curcl)
   if c != '\n' {
-    lline := buf[curln].txt[:curcl]
-    rline := buf[curln].txt[curcl:]
+    lline := buf[curln].txt[:offset]
+    rline := buf[curln].txt[offset:]
     buf[curln].txt = lline + string(c) + rline
     curcl = nextcl(curcl)
   } else {
-    lline := buf[curln].txt[curcl:]
-    buf[curln].txt = buf[curln].txt[:curcl]
+    lline := buf[curln].txt[offset:]
+    buf[curln].txt = buf[curln].txt[:offset]
     puttxt(lline)
     curcl = 0
   }
@@ -45,17 +69,19 @@ func inrune(c rune) {
 /* dlrune -- delete char in line */
 func dlrune() {
   dirty = true
+  offset := cloff(curcl)
   if curcl > 0 {
-    lline := buf[curln].txt[:curcl-1]
-    rline := buf[curln].txt[curcl:]
+    chlen := rw(curcl-1)
+    lline := buf[curln].txt[:offset-chlen]
+    rline := buf[curln].txt[offset:]
     buf[curln].txt = lline + rline
     curcl = prevcl(curcl)
   } else if curln > 1 {
     lline := buf[curln-1].txt
-    rline := buf[curln].txt[curcl:]
+    rline := buf[curln].txt[offset:]
     stat := OK
     lndelete(curln, curln, &stat)
-    curcl = len(buf[curln].txt)
+    curcl = lnlen()
     buf[curln].txt = lline + rline
   }
 }
@@ -207,14 +233,14 @@ func prevln(n int) int {
 
 /* nextcl -- get next col */
 func nextcl(n int) int {
-  if curcl < len(buf[curln].txt) {
+  if curcl < lnlen() {
     return n + 1
   } else {
     if curln < lastln {
       curln = nextln(curln)
       return 0
     } else {
-      return len(buf[curln].txt)
+      return lnlen()
     }
   }
 }
@@ -226,7 +252,7 @@ func prevcl(n int) int {
   } else {
     if curln > 1 {
       curln = prevln(curln)
-      return len(buf[curln].txt)
+      return lnlen()
     } else {
       return 0
     }
@@ -254,12 +280,52 @@ func subst(sub string) stcode {
   return stat
 }
 
+/* sptab -- convert tabs to spaces */
+func sptab() []buftype {
+  dbuf := make([]buftype, len(buf))
+  copy(dbuf, buf)
+/*
+  int idx = 0;
+  for (j = 0; j < row->size; j++) {
+    if (row->chars[j] == '\t') {
+      row->render[idx++] = ' ';
+      while (idx % KILO_TAB_STOP != 0) row->render[idx++] = ' ';
+    } else {
+      row->render[idx++] = row->chars[j];
+    }
+  }
+*/
+
+
+  for row := 1; row < rows; row++ {
+    brow := row + offrw
+    if brow >= 1 && brow < len(buf) {
+      i := 0; newstr := ""
+      for _, ch := range buf[brow].txt {
+        if ch == '\t' {
+          newstr += " "
+          i++
+          for i % TABS != 0 {
+            newstr += " "
+            i++
+          }
+        } else {
+          newstr += string(ch)
+          i++
+        }
+      }
+      dbuf[brow].txt = newstr
+    }
+  }
+  return dbuf
+}
+
 /* cltab -- convert curcl to tabcl */
 func cltab() int {
   rx := 0;
   for col := 0; col < curcl; col++ {
-    if col < len(buf[curln].txt) {
-      if buf[curln].txt[col] == '\t' { rx = rx + (TABS-1) }
+    if col < lnlen() {
+      if buf[curln].txt[cloff(col)] == '\t' { rx = rx + (TABS-1) - (rx % TABS) }
       rx++;
     }
   }
@@ -279,11 +345,7 @@ func doscroll() {
 
 /* dorender -- display buffer content (visual mode) */
 func dorender() {
-  dbuf := make([]buftype, len(buf))
-  copy(dbuf, buf)
-  for row := 1; row < len(buf); row++ {
-    dbuf[row].txt = strings.Replace(dbuf[row].txt, "\t", strings.Repeat(" ", TABS), -1)
-  }
+  dbuf := sptab()
   for row := 1; row <= rows; row++ {
     brow := row + offrw
     if brow >= 1 && brow < len(buf) {
@@ -291,7 +353,7 @@ func dorender() {
       lnoff := lnwidth - len(lnnum)-1
       msg(lnoff, row-1, CCOL, DCOL, lnnum)
       if offcl >= len(dbuf[brow].txt) { continue }
-      line := dbuf[brow].txt[offcl:]
+      line := dbuf[brow].txt[cloff(offcl):]
       if hl == 1 {
         hlsyntax(lnwidth, row-1, line)
       } else {
