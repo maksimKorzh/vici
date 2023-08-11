@@ -8,7 +8,7 @@ Minimalist cross-platform terminal based text editor
 Combine powerful Linux 'ed' command set with the visual interface,<br>
 hence the name: (V)isual (I)nterface, (C)ommand (I)nput.<br>
 Unlikely VI/VIM this project is focused on simplicity of usage<br>
-and should be treated like the "visual ed".
+and should be treated as "visual ed", which essentially it is.
 
 # Features
  - visual text editing
