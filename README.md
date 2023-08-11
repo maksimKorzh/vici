@@ -1,13 +1,13 @@
-# vici
+# VICI: (V)isual (I)nterface (C)ommand (I)nput
 Minimalist cross-platform terminal based text editor
 
 # Screenshot
 ![IMAGE ALT TEXT HERE](https://raw.githubusercontent.com/maksimKorzh/vici/main/assets/vici.png)
 
 # Features
- - visual interface
- - command set (inspired by Linux "ed")
- - syntax highlighting
+ - visual text editing
+ - "ed" command set
+ - rudimentary syntax highlighting
 
 # Shortcuts
        ESC - enter the 'VIEW' mode
@@ -78,7 +78,6 @@ Minimalist cross-platform terminal based text editor
     : 10,23y         copy lines 10,23 inclusive to copy buffer
     : 10,23d         cut lines 10,23 inclusive to copy buffer
     : 41             paste content of the copy buffer after line 41
- 
 
 # Usage
     $ vici                # opens editor with 'out.txt' source file name
