@@ -40,19 +40,19 @@ func lnlen() int {
 }
 
 /* cloff -- convert curcl to offset index */
-func cloff(i int) int {
-  index := 0
-  for offset := range buf[curln].txt + " " {
+func cloff(i int, s string) int {
+  index := 0; offset := 0
+  for offset = range s + " " {
     if index == i { return offset }
     index++
   }
-  return 0
+  return offset
 }
 
 /* inrune -- insert char into line */
 func inrune(c rune) {
   dirty = true
-  offset := cloff(curcl)
+  offset := cloff(curcl, buf[curln].txt)
   if c != '\n' {
     lline := buf[curln].txt[:offset]
     rline := buf[curln].txt[offset:]
@@ -69,7 +69,7 @@ func inrune(c rune) {
 /* dlrune -- delete char in line */
 func dlrune() {
   dirty = true
-  offset := cloff(curcl)
+  offset := cloff(curcl, buf[curln].txt)
   if curcl > 0 {
     chlen := rw(curcl-1)
     lline := buf[curln].txt[:offset-chlen]
@@ -325,7 +325,7 @@ func cltab() int {
   rx := 0;
   for col := 0; col < curcl; col++ {
     if col < lnlen() {
-      if buf[curln].txt[cloff(col)] == '\t' { rx = rx + (TABS-1) - (rx % TABS) }
+      if buf[curln].txt[cloff(col, buf[curln].txt)] == '\t' { rx = rx + (TABS-1) - (rx % TABS) }
       rx++;
     }
   }
@@ -353,7 +353,9 @@ func dorender() {
       lnoff := lnwidth - len(lnnum)-1
       msg(lnoff, row-1, CCOL, DCOL, lnnum)
       if offcl >= len(dbuf[brow].txt) { continue }
-      line := dbuf[brow].txt[cloff(offcl):]
+      line := ""
+      line = dbuf[brow].txt[cloff(offcl, dbuf[brow].txt):]
+      //if offcl > 12 { dbdie(dbuf[brow].txt, "\n", line, offcl, cloff(offcl, dbuf[brow].txt)) }
       if hl == 1 {
         hlsyntax(lnwidth, row-1, line)
       } else {
