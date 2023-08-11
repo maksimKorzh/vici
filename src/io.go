@@ -147,12 +147,13 @@ func getline(prompt string) string {
       case termbox.KeyEsc: return ""
       case termbox.KeyEnter: return command + "\n"
       case termbox.KeySpace: command += " "
+      case termbox.KeyTab: command += "\t"
       case termbox.KeyBackspace: if len(command) > 0 { command = command[:len(command)-1] }
       case termbox.KeyBackspace2: if len(command) > 0 { command = command[:len(command)-1] }
     }
     if ev.Ch != 0 {
       command += string(ev.Ch)
-      msg(1, rows+1, DCOL, DCOL, command)
+      msg(1, rows+1, DCOL, DCOL, strings.Replace(command, "\t", " ", -1))
     };
     cmdlen := 0
     for _,ch := range command { if ch > 0 { cmdlen++} }
