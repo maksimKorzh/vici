@@ -1,8 +1,14 @@
-# VICI: (V)isual (I)nterface (C)ommand (I)nput
+# VICI
 Minimalist cross-platform terminal based text editor
 
 # Screenshot
 ![IMAGE ALT TEXT HERE](https://raw.githubusercontent.com/maksimKorzh/vici/main/assets/vici.png)
+
+# Project idea
+Combine powerful Linux 'ed' command set with the visual interface,<br>
+hence the name: (V)isual (I)nterface, (C)ommand (I)nput.<br>
+Unlikely VI/VIM this project is focused on simplicity of usage<br>
+and should be treated like the "visual ed".
 
 # Features
  - visual text editing
