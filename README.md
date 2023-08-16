@@ -16,23 +16,21 @@ and should be treated as "visual ed", which essentially it is.
  - rudimentary syntax highlighting
 
 # Shortcuts
-       ESC - enter the 'VIEW' mode
-         e - enter the 'EDIT' mode
-         q -  quit from the text editor
-         w -  write file to disk
-         j -  cat current line to previous one
-         d -  cut current line to copy buffer
-         y -  copy current line to copy buffer
-         p -  paste line from copy buffer
-         h -  toggle syntax highlighting
-         1 -  go to the first line
-         $ -  go to the last line
-         : -  execute command
-    Arrows -  move cursor
-    PgDown -  scroll 4 screen rows downwards
-      PgUp -  scroll 4 screen rows upwards
-      HOME -  move cursor to the begining of the current line
-       END -  move cursor to the end of the current line
+     ESC - enter the 'VIEW' mode
+       e - enter the 'EDIT' mode
+       : - execute command
+       d - cut current line to copy buffer
+       y - copy current line to copy buffer
+       p - paste line from copy buffer
+       j - join current line to previous one
+       h - toggle syntax highlighting
+       1 - go to the first line
+       $ - go to the last line
+  Arrows - move cursor
+  PgDown - scroll 4 screen rows downwards
+    PgUp - scroll 4 screen rows upwards
+    HOME - move cursor to the begining of the current line
+     END - move cursor to the end of the current line
 
 # Commands
     See GNU ed commands for reference, all but global

@@ -84,6 +84,7 @@ func readkey() {
       switch ev.Ch {
         case 'q': execcom("q")
         case 'w': execcom("w")
+        case 'e': mode = EDIT; backup()
         case 'h': hl ^= 1
         case '1': execcom("1")
         case '$': execcom("$")
@@ -103,7 +104,8 @@ func readkey() {
           } else if curln == 1 {
             buf[curln].txt = ""
           }
-        case 'e': mode = EDIT
+        case 'i': mode = EDIT
+        case 'u': execcom("u")
         case ':': cprompt()
       }
     }
@@ -121,7 +123,7 @@ func readkey() {
     if mode == EDIT {
       switch ev.Key {
         case termbox.KeySpace: inrune(' ')
-        case termbox.KeyTab: inrune('\t')//for i := 0; i < TABS; i++ { inrune(' ') }
+        case termbox.KeyTab: for i := 0; i < TABS; i++ { inrune(' ') }
         case termbox.KeyBackspace: dlrune()
         case termbox.KeyBackspace2: dlrune()
         case termbox.KeyEnter: inrune('\n')

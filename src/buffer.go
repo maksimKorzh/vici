@@ -213,6 +213,33 @@ var temp buftype
   }
 }
 
+/* backup -- backup current buffer state to undo buffer */
+func backup() {
+  ubf = make([]buftype, len(buf))
+  copy(ubf, buf)
+  ox = curcl
+  oy = curln
+  ol = lastln
+}
+
+/* swapbf -- swap buffer and undo buffer */
+func swapbf() {
+  tbf := make([]buftype, len(buf))
+  copy(tbf, buf)
+  tx := curcl
+  ty := curln
+  tl := lastln
+  buf = ubf
+  curcl = ox
+  curln = oy
+  lastln = ol
+  ubf = make([]buftype, len(tbf))
+  copy(ubf, tbf)
+  ox = tx
+  oy = ty
+  ol = tl
+}
+
 /* nextln -- get line after n */
 func nextln(n int) int {
   if n >= lastln {
@@ -373,7 +400,7 @@ func dostat() {
   var modstat string
   fnlen := len(savefile)
   if fnlen > 24 { fnlen = 24 }
-  flstat := savefile[:fnlen] + " - " + strconv.Itoa(len(buf)-1) + " lines"
+  flstat := savefile[:fnlen] + " - " + strconv.Itoa(lastln) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
   if mode == EDIT { modstat = " EDIT: " } else { modstat = " VIEW: " }
   curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "

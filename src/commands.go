@@ -201,6 +201,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
   var pflag bool
   pflag = false;    /* may be set by d, m, s */
   *status = ERR;
+  if lin[*i] == ICMD || lin[*i] == ACMD || lin[*i] == CCMD || lin[*i] == SCMD { backup() }
   if lin[*i] == COMMA {
     line1 = 1
     line2 = lastln
@@ -353,6 +354,10 @@ func docmd (lin string, i *int, status *stcode) stcode {
         os.Exit(0)
       }
     }
+  } else if lin[*i] == UCMD {
+    dirty = true
+    swapbf()
+    *status = OK
   }
   return *status
 }

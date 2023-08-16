@@ -55,6 +55,7 @@ const (
   ECMD     = 'e'
   FCMD     = 'f'
   RCMD     = 'r'
+  UCMD     = 'u'
   WCMD     = 'w'
 )
 
@@ -86,7 +87,8 @@ var KEYWORDS = []string {
 
 var buf[]buftype      /* editor's buffer */
 var cpb[]buftype      /* copy buffer */
-
+var ubf[]buftype      /* undo buffer */
+var ox, oy, ol int    /* restore cursor position and last line after undo/redo */
 var hl int            /* syntax highlight toggler (visual mode) */
 var mode int          /* visual/command mode toggler */
 var dirty bool        /* modified flag */
@@ -100,7 +102,6 @@ var curln int         /* current line -- value of dot */
 var curcl int         /* current column (visual mode) */
 var tabcl int         /* current column to render assuming TAB chars */
 var lastln int        /* last line -- value of $ */
-
 var pat string        /* pattern */
 var lin string        /* input line */
 var savefile string;  /* remembered file name */
