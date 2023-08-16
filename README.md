@@ -18,14 +18,15 @@ and should be treated as "visual ed", which essentially it is.
 # Shortcuts
      ESC - enter the 'VIEW' mode
        e - enter the 'EDIT' mode
-       : - execute command
        d - cut current line to copy buffer
        y - copy current line to copy buffer
        p - paste line from copy buffer
        j - join current line to previous one
+       u - undo/redo last change
        h - toggle syntax highlighting
        1 - go to the first line
        $ - go to the last line
+       : - execute command
   Arrows - move cursor
   PgDown - scroll 4 screen rows downwards
     PgUp - scroll 4 screen rows upwards
@@ -65,6 +66,7 @@ and should be treated as "visual ed", which essentially it is.
     : 3i             insert text at line 3 (line is optional, default is current line)
     : 2a             append text after line 2 (line is optional, default is current line)
     : 1c             change text at line 1 (line is optional, default is current line)  
+    : u              undo/redo last change
 
        I/O:
 

@@ -16,9 +16,10 @@ func main() {
   if lastln == 0 { puttxt("") }
   err := termbox.Init()
   if err != nil { fmt.Println(err); os.Exit(1) }
-  curln = 1
+  curln = lastln
   dirty = false
   hl = 1
+  backup()
   for {
     doshow(true)
     if len(buf) > 1 {
