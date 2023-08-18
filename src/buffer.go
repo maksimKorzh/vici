@@ -13,20 +13,6 @@ func setbuf() {
   lastln = 0
 }
 
-/* doprint -- print lines n1 through n2 */
-func doprint (n1, n2 int, c rune) stcode {
-/*  if (n1 <= 0) {
-    return ERR
-  } else {
-    for i := n1; i <= n2; i++ {
-      if c == NCMD { fmt.Print(i, "\t") }
-      fmt.Println(buf[i].txt)
-    }
-    curln = n2;
-    return OK
-  }*/return OK
-}
-
 /* rw -- get current rune width */
 func rw(i int) int {
   runes := []rune(buf[curln].txt + " ")
@@ -92,27 +78,6 @@ func lnjoin() {
   if curln > 1 { dlrune() }
 }
 
-/* lnappend -- append lines after "line" */
-func lnappend(line int) stcode {
-  var inline string
-  var stat stcode
-  var done bool
-  curln = line
-  stat = OK
-  done = false
-  for done == false && stat == OK {
-    inline = getline(APRMT)
-    if inline == "" {
-      stat = ERR
-    } else if inline[0] == PERIOD && inline[1] == NEWLINE {
-      done = true
-    } else if puttxt(inline[:len(inline)-1]) == ERR {
-      stat = ERR
-    }
-  }
-  return stat
-}
-
 /* lndelete -- delete lines n1 through n2 */
 func lndelete(n1, n2 int, status *stcode) stcode {
   if n1 <= 0 {
@@ -123,7 +88,12 @@ func lndelete(n1, n2 int, status *stcode) stcode {
     copy(newbuf[n1:], buf[n2+1:])
     buf = newbuf
     lastln = lastln - (n2 - n1 + 1)
-    curln = prevln(n1)
+    if lastln == 0 {
+      setbuf()
+      puttxt("")
+    } else {
+      curln = prevln(n1)
+    }
     *status = OK
   }
   return *status

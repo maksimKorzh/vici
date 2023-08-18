@@ -61,13 +61,6 @@ and should be treated as "visual ed", which essentially it is.
     : s/pat/sub/     substitute "pat" with "sub" globally ("pat" can be regexp)
     : 2,5s/pat/sub/  substitute "pat" with "sub" within lines 2,5 inclusive
 
-       Edit
-
-    : 3i             insert text at line 3 (line is optional, default is current line)
-    : 2a             append text after line 2 (line is optional, default is current line)
-    : 1c             change text at line 1 (line is optional, default is current line)  
-    : u              undo/redo last change
-
        I/O:
 
     : e file.txt     load "file.txt" to the buffer
@@ -84,6 +77,7 @@ and should be treated as "visual ed", which essentially it is.
     : 10,23y         copy lines 10,23 inclusive to copy buffer
     : 10,23d         cut lines 10,23 inclusive to copy buffer
     : 41             paste content of the copy buffer after line 41
+    : u              undo/redo last change
 
 # Usage
     $ vici                # opens editor with 'out.txt' source file name

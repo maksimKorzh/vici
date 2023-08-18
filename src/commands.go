@@ -176,30 +176,10 @@ func getword(s string, i *int, out *string) int {
   }
 }
 
-/* ckp -- check for "p" after command */
-func ckp (lin string, i *int,  pflag *bool, status *stcode) stcode {
-  skipbl(lin, i);
-  if lin[*i] == PCMD {
-    *i++
-    *pflag = true
-  } else {
-    *pflag = false
-  }
-
-  if lin[*i] == NEWLINE {
-    *status = OK
-  } else {
-    *status = ERR
-  }
-  return *status
-}
-
 /* docmd -- handle all commands except globals */
 func docmd (lin string, i *int, status *stcode) stcode {
   var fil, sub string
   var line3 int
-  var pflag bool
-  pflag = false;    /* may be set by d, m, s */
   *status = ERR;
   if strings.Contains("iacsdcptmjre", string(lin[*i])) { backup() }
   if lin[*i] == COMMA {
@@ -219,40 +199,15 @@ func docmd (lin string, i *int, status *stcode) stcode {
       termbox.Close()
       os.Exit(0)
     }
-  } else if lin[*i] == ACMD {
-    if lin[*i+1] == NEWLINE {
-      *status = lnappend(line2)
-      if *status == OK { dirty = true }
-    }
-  } else if lin[*i] == CCMD {
-    if lin[*i+1] == NEWLINE {
-      if setdef(curln, curln, status) == OK {
-        if lndelete(line1, line2, status) == OK {
-          *status = lnappend(prevln(line1))
-          if *status == OK { dirty = true }
-        }
-      }
-    }
   } else if lin[*i] == DCMD {
     *i++
-    if ckp(lin, i, &pflag, status) == OK {
-      if setdef(curln, curln, status) == OK {
-        cp(line1, line2)
-        if lndelete(line1, line2, status) == OK {
-          dirty = true
-          if nextln(curln) != 0 {
-            curln = nextln(curln)
-          }
+    if setdef(curln, curln, status) == OK {
+      cp(line1, line2)
+      if lndelete(line1, line2, status) == OK {
+        dirty = true
+        if nextln(curln) != 0 {
+          curln = nextln(curln)
         }
-      }
-    }
-  } else if lin[*i] == ICMD {
-    if lin[*i+1] == NEWLINE {
-      dirty = true
-      if line2 == 0 {
-        *status = lnappend(0)
-      } else {
-        *status = lnappend(prevln(line2))
       }
     }
   } else if lin[*i] == JCMD {
@@ -265,45 +220,37 @@ func docmd (lin string, i *int, status *stcode) stcode {
     *i++
     if getone(lin, i, &line3, status) == ENDDATA { *status = ERR }
     if *status == OK {
-      if ckp(lin, i, &pflag, status) == OK {
-        if setdef(curln, curln, status) == OK {
-          *status = move(&line3)
-          if *status == OK { dirty = true }
-        }
+      if setdef(curln, curln, status) == OK {
+        *status = move(&line3)
+        if *status == OK { dirty = true }
       }
     }
   } else if lin[*i] == TCMD {
     *i++
     if getone(lin, i, &line3, status) == ENDDATA { *status = ERR }
     if *status == OK {
-      if ckp(lin, i, &pflag, status) == OK {
-        if setdef(curln, curln, status) == OK {
-          *status = dup(&line3)
-          if *status == OK { dirty = true }
-        }
+      if setdef(curln, curln, status) == OK {
+        *status = dup(&line3)
+        if *status == OK { dirty = true }
       }
     }
   } else if lin[*i] == YCMD {
     *i++
-    if ckp(lin, i, &pflag, status) == OK {
-      if setdef(curln, curln, status) == OK {
-        cp(line1, line2)
-        *status = OK
-      }
+    if setdef(curln, curln, status) == OK {
+      cp(line1, line2)
+      *status = OK
     }
   } else if lin[*i] == PCMD {
     *i++
-    if ckp(lin, i, &pflag, status) == OK {
-      curln = line2
-      if len(cpb) > 0 {
-        for i := 0; i < len(cpb); i++ {
-          puttxt(cpb[i].txt)
-        }
-        dirty = true
-        *status = OK
-      } else {
-        *status = ERR
+    curln = line2
+    if len(cpb) > 0 {
+      for i := 0; i < len(cpb); i++ {
+        puttxt(cpb[i].txt)
       }
+      dirty = true
+      *status = OK
+    } else {
+      *status = ERR
     }
   } else if lin[*i] == SCMD {
     *i++
@@ -312,11 +259,9 @@ func docmd (lin string, i *int, status *stcode) stcode {
         sub = strings.Split(lin[*i:], string(lin[*i]))[1]
         *i += len(sub)+2
         if *i < len(lin) {
-          if ckp(lin, i, &pflag, status) == OK {
-            if setdef(1, lastln, status) == OK {
-              *status = subst(sub)
-              if *status == OK { dirty = true }
-            }
+          if setdef(1, lastln, status) == OK {
+            *status = subst(sub)
+            if *status == OK { dirty = true }
           }
         }
       }
