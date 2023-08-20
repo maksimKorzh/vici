@@ -85,11 +85,11 @@ func readkey() {
         case 'q': execcom("q")
         case 'w': execcom("w")
         case 'e': mode = EDIT; backup()
-        case 'h': hl ^= 1
+        case 's': hl ^= 1
         case '1': execcom("1")
         case '$': execcom("$")
         case 'y': execcom("y")
-        case 'j': lnjoin()
+        case 'c': lnjoin()
         case 'p':
           if curln > 1 {
             curln = prevln(curln)
@@ -107,6 +107,14 @@ func readkey() {
         case 'i': mode = EDIT
         case 'u': execcom("u")
         case ':': cprompt()
+        case 'k': if curln > 1 { curln = prevln(curln) }
+        case 'j': if curln < lastln { curln = nextln(curln) }
+        case 'h': curcl = prevcl(curcl)
+        case 'l': curcl = nextcl(curcl)
+        case 'n': curcl = 0
+        case '.': curcl = lnlen()
+        case ',': execcom(SCRDN)
+        case 'm': execcom(SCRUP)
       }
     }
   } else {
