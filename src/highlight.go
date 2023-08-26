@@ -39,6 +39,15 @@ func pstr(line string, i *int) string {
   *i++
   str := "\""
   for *i < len(line) && line[*i] != '"' {
+    if line[*i] == '\\' && (*i+1) < len(line) && line[*i+1] == '"'{
+      *i += 2
+      str += "\\\""
+      if (*i-3) >= 0 && line[*i-3] == '\\' {
+        return str
+      } else {
+        continue
+      }
+    }
     str += string(line[*i])
     *i++
   }
@@ -52,6 +61,15 @@ func pchr(line string, i *int) string {
   *i++
   chr := "'"
   for *i < len(line) && line[*i] != '\'' {
+    if line[*i] == '\\' && (*i+1) < len(line) && line[*i+1] == '\'' {
+      *i += 2
+      chr += "\\'"
+      if (*i-3) >= 0 && line[*i-3] == '\\' {
+        return chr
+      } else {
+        continue
+      }
+    }
     chr += string(line[*i])
     *i++
   }
