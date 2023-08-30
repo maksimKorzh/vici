@@ -216,6 +216,12 @@ func docmd (lin string, i *int, status *stcode) stcode {
   } else if lin[*i] == NCMD {
     inrune('\n')
     *status = OK
+  } else if lin[*i] == CCMD {
+    lnjoin()
+    *status = OK
+  } else if lin[*i] == HCMD {
+    hl ^= 1
+    *status = OK
   } else if lin[*i] == MCMD {
     *i++
     if getone(lin, i, &line3, status) == ENDDATA { *status = ERR }

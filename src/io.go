@@ -12,6 +12,8 @@ func doread(n int, fil string) stcode {
   defer file.Close()
   curln = n
   scanner := bufio.NewScanner(file)
+  buf := make([]byte, 0, 64*1024)
+  scanner.Buffer(buf, 1024*1024)
   count := 0
   for scanner.Scan() {
     line := scanner.Text()
@@ -85,11 +87,11 @@ func readkey() {
         case 'q': execcom("q")
         case 'w': execcom("w")
         case 'e': mode = EDIT; backup()
-        case 's': hl ^= 1
+        case 's': execcom("h")
         case '1': execcom("1")
         case '$': execcom("$")
         case 'y': execcom("y")
-        case 'c': lnjoin()
+        case 'c': execcom("c")
         case 'p':
           if curln > 1 {
             curln = prevln(curln)
