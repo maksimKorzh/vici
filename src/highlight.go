@@ -117,11 +117,11 @@ func hlsyntax(col, row int, line string) {
           i--
           msg(col, row, MCOL|BOLD, DCOL, pcomm(line, &i))
         }
-      } 
+      }
     } else if strings.Contains(".,(){}", string(line[i])) {
       msg(col, row, DCOL, DCOL, string(line[i]))
       i++
-    } else if strings.Contains("+-*/=%<>:.,(){}", string(line[i])) {
+    } else if strings.Contains("+-*/=%<>:", string(line[i])) {
       msg(col, row, MCOL|BOLD, DCOL, string(line[i]))
       i++
     } else {
