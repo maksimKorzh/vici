@@ -22,6 +22,7 @@ and should be treated as "visual ed", which essentially it is.
             y - copy current line to copy buffer
             p - paste line from copy buffer
             c - join current line to previous one
+            x - delete char under the cursor
             u - undo/redo last change
             s - toggle syntax highlighting
             1 - go to the first line

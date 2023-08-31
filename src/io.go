@@ -92,6 +92,11 @@ func readkey() {
         case '$': execcom("$")
         case 'y': execcom("y")
         case 'c': execcom("c")
+        case 'x':
+          if curcl < lnlen() {
+            curcl++
+            dlrune()
+          }
         case 'p':
           if curln > 1 {
             curln = prevln(curln)
