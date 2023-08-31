@@ -17,7 +17,7 @@ func pnum(line string, i *int) string {
 func pword(line string, i *int) string {
   word := ""
   for *i < len(line) && line[*i] != ' ' {
-    if strings.Contains(":\"'+-*/<>=.,(){}", string(line[*i])) { return word }
+    if strings.Contains(":\"'+-*/<>=.,(){}[]", string(line[*i])) { return word }
     word += string(line[*i])
     *i++
   }
@@ -118,7 +118,7 @@ func hlsyntax(col, row int, line string) {
           msg(col, row, MCOL|BOLD, DCOL, pcomm(line, &i))
         }
       }
-    } else if strings.Contains(".,(){}", string(line[i])) {
+    } else if strings.Contains(".,(){}[]", string(line[i])) {
       msg(col, row, DCOL, DCOL, string(line[i]))
       i++
     } else if strings.Contains("+-*/=%<>:", string(line[i])) {
