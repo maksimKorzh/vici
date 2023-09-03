@@ -144,8 +144,8 @@ func readkey() {
         case termbox.KeyEnter: inrune('\n')
       }
     }
-    if curcl > lnlen() { curcl = lnlen() }
   }
+  if curcl > lnlen() { curcl = lnlen() }
 }
 
 /* getline -- invoke prompt to execute commands */
