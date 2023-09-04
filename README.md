@@ -18,6 +18,7 @@ and should be treated as "visual ed", which essentially it is.
 # Shortcuts
           ESC - enter the 'VIEW' mode
             e - enter the 'EDIT' mode
+            r - enter the 'REPLACE' mode
             d - cut current line to copy buffer
             y - copy current line to copy buffer
             p - paste line from copy buffer

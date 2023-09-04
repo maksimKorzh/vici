@@ -82,6 +82,8 @@ func readkey() {
   } else if ev.Ch != 0 {
     if mode == EDIT {
       inrune(rune(ev.Ch))
+    } else if mode == REPLACE {
+      rerune(rune(ev.Ch))
     } else {
       switch ev.Ch {
         case 'q': execcom("q")
@@ -111,7 +113,7 @@ func readkey() {
           } else if curln == 1 {
             buf[curln].txt = ""
           }
-        case 'i': mode = EDIT
+        case 'r': mode = REPLACE
         case 'u': execcom("u")
         case ':': cprompt()
         case 'k': if curln > 1 { curln = prevln(curln) }

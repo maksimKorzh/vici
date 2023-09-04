@@ -19,6 +19,7 @@ const SCRUP = ".+4"  /* command to execute on PageUp */
 const (
   VIEW int = iota
   EDIT
+  REPLACE
 )
 
 const (

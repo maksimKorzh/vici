@@ -35,6 +35,19 @@ func cloff(i int, s string) int {
   return offset
 }
 
+/* Replace rune */
+func rerune(c rune) {
+  dirty = true
+  offset := cloff(curcl, buf[curln].txt)
+  if c != '\n' {
+    if offset < len(buf[curln].txt) {
+      lline := buf[curln].txt[:offset]
+      rline := buf[curln].txt[offset:]
+      buf[curln].txt = lline + string(c) + rline[1:]
+      curcl = nextcl(curcl)
+    } else { inrune(c) }
+  }
+}
 /* inrune -- insert char into line */
 func inrune(c rune) {
   dirty = true
@@ -352,8 +365,7 @@ func dorender() {
       if offcl >= len(dbuf[brow].txt) { continue }
       line := ""
       line = dbuf[brow].txt[cloff(offcl, dbuf[brow].txt):]
-      //if offcl > 12 { dbdie(dbuf[brow].txt, "\n", line, offcl, cloff(offcl, dbuf[brow].txt)) }
-      if hl == 1 {
+      if hl == 1 && !strings.Contains(savefile, ".txt") && !strings.Contains(savefile, ".md") {
         hlsyntax(lnwidth, row-1, line)
       } else {
         msg(lnwidth, row-1, DCOL, DCOL, line)
@@ -372,7 +384,8 @@ func dostat() {
   if fnlen > 24 { fnlen = 24 }
   flstat := savefile[:fnlen] + " - " + strconv.Itoa(lastln) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
-  if mode == EDIT { modstat = " EDIT: " } else { modstat = " VIEW: " }
+  if mode == EDIT { modstat = " E "} else if mode == REPLACE {
+  modstat = " R " } else { modstat = " - " }
   curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "
   uspace := len(modstat) + len(flstat) + len(curstat)
   spaces := ""
