@@ -21,6 +21,7 @@ and should be treated as "visual ed", which essentially it is.
             r - enter the 'REPLACE' mode
             d - cut current line to copy buffer
             y - copy current line to copy buffer
+            a - enable autocomplete for parens & quotes
             p - paste line from copy buffer
             c - join current line to previous one
             x - delete char under the cursor

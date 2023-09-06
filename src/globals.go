@@ -90,6 +90,7 @@ var cpb[]buftype      /* copy buffer */
 var ubf[]buftype      /* undo buffer */
 var ox, oy, ol int    /* restore cursor position and last line after undo/redo */
 var hl int            /* syntax highlight toggler (visual mode) */
+var auto_paren int    /* auto close paren */
 var mode int          /* visual/command mode toggler */
 var dirty bool        /* modified flag */
 var lnwidth int       /* line number width (visual mode) */

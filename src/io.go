@@ -82,17 +82,19 @@ func readkey() {
   } else if ev.Ch != 0 {
     if mode == EDIT {
       inrune(rune(ev.Ch))
-      switch ev.Ch {
-        case '(': inrune(rune(')')); curcl = prevcl(curcl)
-        case '[': inrune(rune(']')); curcl = prevcl(curcl)
-        case '\'': inrune(rune('\'')); curcl = prevcl(curcl)
-        case '"': inrune(rune('"')); curcl = prevcl(curcl)
-        case '{':
-          inrune(rune('}'))
-          curcl = prevcl(curcl)
-          inrune(rune('\n'))
-          inrune(rune('\n'))
-          curln = prevln(curln)
+      if auto_paren == 1 {
+        switch ev.Ch {
+          case '(': inrune(rune(')')); curcl = prevcl(curcl)
+          case '[': inrune(rune(']')); curcl = prevcl(curcl)
+          case '\'': inrune(rune('\'')); curcl = prevcl(curcl)
+          case '"': inrune(rune('"')); curcl = prevcl(curcl)
+          case '{':
+            inrune(rune('}'))
+            curcl = prevcl(curcl)
+            inrune(rune('\n'))
+            inrune(rune('\n'))
+            curln = prevln(curln)
+        }
       }
     } else if mode == REPLACE {
       rerune(rune(ev.Ch))
@@ -103,6 +105,7 @@ func readkey() {
         case 'e': mode = EDIT; backup()
         case 'r': mode = REPLACE; backup()
         case 's': execcom("h")
+        case 'a': auto_paren ^= 1
         case '1': execcom("1")
         case '$': execcom("$")
         case 'y': execcom("y")
