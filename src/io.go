@@ -82,6 +82,18 @@ func readkey() {
   } else if ev.Ch != 0 {
     if mode == EDIT {
       inrune(rune(ev.Ch))
+      switch ev.Ch {
+        case '(': inrune(rune(')')); curcl = prevcl(curcl)
+        case '[': inrune(rune(']')); curcl = prevcl(curcl)
+        case '\'': inrune(rune('\'')); curcl = prevcl(curcl)
+        case '"': inrune(rune('"')); curcl = prevcl(curcl)
+        case '{':
+          inrune(rune('}'))
+          curcl = prevcl(curcl)
+          inrune(rune('\n'))
+          inrune(rune('\n'))
+          curln = prevln(curln)
+      }
     } else if mode == REPLACE {
       rerune(rune(ev.Ch))
     } else {
@@ -89,6 +101,7 @@ func readkey() {
         case 'q': execcom("q")
         case 'w': execcom("w")
         case 'e': mode = EDIT; backup()
+        case 'r': mode = REPLACE; backup()
         case 's': execcom("h")
         case '1': execcom("1")
         case '$': execcom("$")
@@ -113,7 +126,6 @@ func readkey() {
           } else if curln == 1 {
             buf[curln].txt = ""
           }
-        case 'r': mode = REPLACE
         case 'u': execcom("u")
         case ':': cprompt()
         case 'k': if curln > 1 { curln = prevln(curln) }
