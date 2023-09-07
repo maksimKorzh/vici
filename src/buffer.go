@@ -380,17 +380,19 @@ func dorender() {
 /* dostat -- display status bar */
 func dostat() {
   var modstat string
+  var parenst string
   fnlen := len(savefile)
   if fnlen > 24 { fnlen = 24 }
   flstat := savefile[:fnlen] + " - " + strconv.Itoa(lastln) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
   if mode == EDIT { modstat = " E "} else if mode == REPLACE {
   modstat = " R " } else { modstat = " - " }
+  if auto_paren == 1 { parenst = " {}" } //else { parenst = " --" }
   curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "
-  uspace := len(modstat) + len(flstat) + len(curstat)
+  uspace := len(modstat) + len(flstat) + len(curstat) + len(parenst)
   spaces := ""
   if cols - uspace >= 1 { spaces = strings.Repeat(" ", cols - uspace) }
-  message := modstat + flstat + spaces + curstat
+  message := parenst + modstat + flstat + spaces + curstat
   msg(0, rows, NCOL, WCOL, message)
 }
 
