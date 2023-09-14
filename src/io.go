@@ -79,6 +79,7 @@ func readkey() {
   ev := getev()
   if ev.Key == termbox.KeyEsc {
     mode = VIEW
+    auto_paren = 0
   } else if ev.Ch != 0 {
     if mode == EDIT {
       inrune(rune(ev.Ch))
@@ -105,7 +106,7 @@ func readkey() {
         case 'e': mode = EDIT; backup()
         case 'r': mode = REPLACE; backup()
         case 's': execcom("h")
-        case 'a': auto_paren ^= 1
+        case 'a': auto_paren = 1
         case '1': execcom("1")
         case '$': execcom("$")
         case 'y': execcom("y")
