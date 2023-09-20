@@ -75,7 +75,7 @@ const (
 /* variables for vici */
 var KEYWORDS = []string {
   "import", "as", "from", "in",
-  "and", "or", "fi",
+  "and", "or", "fi", "then",
   "try", "except", "pass",
   "if", "else", "elif",
   "for", "do", "while",
