@@ -78,7 +78,7 @@ var KEYWORDS = []string {
   "and", "or", "fi", "then",
   "try", "except", "pass",
   "if", "else", "elif",
-  "for", "do", "while",
+  "for", "do", "done", "while",
   "var", "const", "iota", "type",
   "int", "char", "float", "double", "rune", "byte",
   "func", "function", "def",
