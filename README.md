@@ -14,27 +14,27 @@ and should be treated as "visual ed", which essentially it is.
  - visual text editing
  - "ed" command set
  - rudimentary syntax highlighting
-
+(sdsd, ddsd) "ssd" (dsd) "sdsd"
 # Shortcuts
           ESC - enter the 'VIEW' mode
-            e - enter the 'EDIT' mode
+            i - enter the 'EDIT' mode
             r - enter the 'REPLACE' mode
             d - cut current line to copy buffer
             y - copy current line to copy buffer
             a - enable autocomplete for parens & quotes
             p - paste line from copy buffer
-            c - join current line to previous one
+            J - join current line to previous one
             x - delete char under the cursor
             u - undo/redo last change
             s - toggle syntax highlighting
-            1 - go to the first line
-            $ - go to the last line
-            : - execute command
+            g - go to the first line
+            G - go to the last line
+          :,/ - execute command
   hjkl/Arrows - move cursor
-     m/PgDown - scroll 4 screen rows downwards
-       ,/PgUp - scroll 4 screen rows upwards
-       n/HOME - move cursor to the begining of the current line
-        ./END - move cursor to the end of the current line
+Ctrl-d/PgDown - scroll 4 screen rows downwards
+  Ctrl-u/PgUp - scroll 4 screen rows upwards
+       0/HOME - move cursor to the begining of the current line
+        $/END - move cursor to the end of the current line
 
 # Commands
     See GNU ed commands for reference, all but global
