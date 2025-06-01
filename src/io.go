@@ -77,7 +77,11 @@ func getev() termbox.Event {
 /* readkey -- process keyboard input (visual mode) */
 func readkey() {
   ev := getev()
-  if ev.Key == termbox.KeyEsc {
+  if ev.Key == termbox.KeyCtrlU {
+    execcom(SCRDN)
+  } else if ev.Key == termbox.KeyCtrlD {
+    execcom(SCRUP)
+  } else if ev.Key == termbox.KeyEsc {
     mode = VIEW
     auto_paren = 0
   } else if ev.Ch != 0 {
@@ -103,14 +107,14 @@ func readkey() {
       switch ev.Ch {
         case 'q': execcom("q")
         case 'w': execcom("w")
-        case 'e': mode = EDIT; backup()
+        case 'i': mode = EDIT; backup()
         case 'r': mode = REPLACE; backup()
         case 's': execcom("h")
         case 'a': auto_paren = 1
-        case '1': execcom("1")
-        case '$': execcom("$")
+        case 'g': execcom("1")
+        case 'G': execcom("G")
         case 'y': execcom("y")
-        case 'c': execcom("c")
+        case 'J': execcom("J")
         case 'x':
           if curcl < lnlen() {
             curcl++
@@ -132,14 +136,15 @@ func readkey() {
           }
         case 'u': execcom("u")
         case ':': cprompt()
+        case '/': cprompt()
         case 'k': if curln > 1 { curln = prevln(curln) }
         case 'j': if curln < lastln { curln = nextln(curln) }
         case 'h': curcl = prevcl(curcl)
         case 'l': curcl = nextcl(curcl)
-        case 'n': curcl = 0
-        case '.': curcl = lnlen()
-        case ',': execcom(SCRDN)
-        case 'm': execcom(SCRUP)
+        case '0': curcl = 0
+        case '$': curcl = lnlen()
+       // case termbox.KeyCtrlD: execcom(SCRDN)
+       // case ('u' & 31): execcom(SCRUP)
       }
     }
   } else {
@@ -203,22 +208,19 @@ func getline(prompt string) string {
 /* cprompt -- invoke prompt to execute commands */
 func cprompt() {
   rows--
-  for {
-    lin = getline(CPRMT)
-    if lin == "" || lin == "\n" { break }
-    i := 0;
-    cursave := curln;
-    var status stcode
-    if getlist(lin, &i, &status) == OK {
-      status = docmd(lin, &i, &status)
-    }
-    if status == ERR {
-      msg(0, rows+1, DCOL, DCOL, "?" + strings.Repeat(" ", cols-1))
-      curln = min(cursave, lastln)
-      termbox.SetCursor(1, rows+1)
-      termbox.Flush()
-      getev()
-    }
+  lin = getline(CPRMT)
+  if lin == "" || lin == "\n" { return }
+  i := 0;
+  cursave := curln;
+  var status stcode
+  if getlist(lin, &i, &status) == OK {
+    status = docmd(lin, &i, &status)
+  }
+  if status == ERR {
+    msg(0, rows+1, DCOL, DCOL, "?" + strings.Repeat(" ", cols-1))
+    curln = min(cursave, lastln)
+    termbox.SetCursor(1, rows+1)
+    termbox.Flush()
   }
   rows++
 }

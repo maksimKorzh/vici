@@ -385,7 +385,7 @@ func dostat() {
   if fnlen > 24 { fnlen = 24 }
   flstat := savefile[:fnlen] + " - " + strconv.Itoa(lastln) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
-  if mode == EDIT { modstat = " E "} else if mode == REPLACE {
+  if mode == EDIT { modstat = " I "} else if mode == REPLACE {
   modstat = " R " } else { modstat = " - " }
   if auto_paren == 1 { parenst = " {}" } //else { parenst = " --" }
   curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "
