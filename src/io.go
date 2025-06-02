@@ -111,6 +111,7 @@ func readkey() {
         case 'r': mode = REPLACE; backup()
         case 's': execcom("h")
         case 'a': auto_paren = 1
+        case 'A': curcl = lnlen(); mode = EDIT
         case 'g': execcom("1")
         case 'G': execcom("G")
         case 'y': execcom("y")
