@@ -81,6 +81,8 @@ func readkey() {
     execcom(SCRDN)
   } else if ev.Key == termbox.KeyCtrlD {
     execcom(SCRUP)
+  } else if ev.Key == termbox.KeyCtrlR {
+    execcom("R")
   } else if ev.Key == termbox.KeyEsc {
     mode = VIEW
     auto_paren = 0
@@ -111,7 +113,7 @@ func readkey() {
         case 'r': mode = REPLACE; backup()
         case 's': execcom("h")
         case 'a': auto_paren = 1
-        case 'A': curcl = lnlen(); mode = EDIT
+        case 'A': curcl = lnlen(); mode = EDIT; backup()
         case 'g': execcom("1")
         case 'G': execcom("G")
         case 'y': execcom("y")
@@ -146,8 +148,6 @@ func readkey() {
         case 'l': curcl = nextcl(curcl)
         case '0': curcl = 0
         case '$': curcl = lnlen()
-       // case termbox.KeyCtrlD: execcom(SCRDN)
-       // case ('u' & 31): execcom(SCRUP)
       }
     }
   } else {

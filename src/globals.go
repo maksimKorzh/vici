@@ -55,6 +55,7 @@ const (
   ECMD     = 'e'
   FCMD     = 'f'
   RCMD     = 'r'
+  OCMD     = 'R'
   UCMD     = 'u'
   WCMD     = 'w'
 )

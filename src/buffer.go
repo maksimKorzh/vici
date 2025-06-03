@@ -48,6 +48,7 @@ func rerune(c rune) {
     } else { inrune(c) }
   }
 }
+
 /* inrune -- insert char into line */
 func inrune(c rune) {
   dirty = true
@@ -197,7 +198,7 @@ var temp buftype
 }
 
 /* backup -- backup current buffer state to undo buffer */
-func backup() {
+func backup_() {
   ubf = make([]buftype, len(buf))
   copy(ubf, buf)
   ox = curcl

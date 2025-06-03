@@ -308,7 +308,13 @@ func docmd (lin string, i *int, status *stcode) stcode {
   } else if lin[*i] == UCMD {
     if lin[*i+1] == NEWLINE && nlines == 0 {
       dirty = true
-      swapbf()
+      undo()
+      *status = OK
+    }
+  } else if lin[*i] == OCMD {
+    if lin[*i+1] == NEWLINE && nlines == 0 {
+      dirty = true
+      redo()
       *status = OK
     }
   }
