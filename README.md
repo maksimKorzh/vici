@@ -14,10 +14,12 @@ and should be treated as "visual ed", which essentially it is.
  - visual text editing
  - "ed" command set
  - rudimentary syntax highlighting
-(sdsd, ddsd) "ssd" (dsd) "sdsd"
+ - unlimited undo/redo
+
 # Shortcuts
           ESC - enter the 'VIEW' mode
             i - enter the 'EDIT' mode
+            A - go to last char in line, enter the 'EDIT' mode
             r - enter the 'REPLACE' mode
             d - cut current line to copy buffer
             y - copy current line to copy buffer
@@ -25,10 +27,13 @@ and should be treated as "visual ed", which essentially it is.
             p - paste line from copy buffer
             J - join current line to previous one
             x - delete char under the cursor
-            u - undo/redo last change
+            u - undo last change
+       Ctrl-R - redo last change
             s - toggle syntax highlighting
             g - go to the first line
             G - go to the last line
+            n - find next pattern
+            N - find prev pattern
           :,/ - execute command
   hjkl/Arrows - move cursor
 Ctrl-d/PgDown - scroll 4 screen rows downwards

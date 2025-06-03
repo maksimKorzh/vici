@@ -198,30 +198,56 @@ var temp buftype
 }
 
 /* backup -- backup current buffer state to undo buffer */
-func backup_() {
-  ubf = make([]buftype, len(buf))
-  copy(ubf, buf)
-  ox = curcl
-  oy = curln
-  ol = lastln
+func backup() {
+  snapshot := edst{
+    buf:    make([]buftype, len(buf)),
+    curcl:  curcl,
+    curln:  curln,
+    lastln: lastln,
+  }
+  copy(snapshot.buf, buf)
+  unst = append(unst, snapshot)
+  rest = nil
 }
 
-/* swapbf -- swap buffer and undo buffer */
-func swapbf() {
-  tbf := make([]buftype, len(buf))
-  copy(tbf, buf)
-  tx := curcl
-  ty := curln
-  tl := lastln
-  buf = ubf
-  curcl = ox
-  curln = oy
-  lastln = ol
-  ubf = make([]buftype, len(tbf))
-  copy(ubf, tbf)
-  ox = tx
-  oy = ty
-  ol = tl
+/* undo -- undo last action */
+func undo() {
+  if len(unst) == 0 { return }
+  snapshot := edst{
+    buf:    make([]buftype, len(buf)),
+    curcl:  curcl,
+    curln:  curln,
+    lastln: lastln,
+  }
+  copy(snapshot.buf, buf)
+  rest = append(rest, snapshot)
+  last := unst[len(unst)-1]
+  unst = unst[:len(unst)-1]
+  buf = make([]buftype, len(last.buf))
+  copy(buf, last.buf)
+  curcl = last.curcl
+  curln = last.curln
+  lastln = last.lastln
+}
+
+/* redo -- redo last action */
+func redo() {
+  if len(rest) == 0 { return }
+  snapshot := edst{
+    buf:    make([]buftype, len(buf)),
+    curcl:  curcl,
+    curln:  curln,
+    lastln: lastln,
+  }
+  copy(snapshot.buf, buf)
+  unst = append(unst, snapshot)
+  last := rest[len(rest)-1]
+  rest = rest[:len(rest)-1]
+  buf = make([]buftype, len(last.buf))
+  copy(buf, last.buf)
+  curcl = last.curcl
+  curln = last.curln
+  lastln = last.lastln
 }
 
 /* nextln -- get line after n */

@@ -8,6 +8,13 @@ type buftype struct {
   txt string   /* text of line */
 }
 
+type edst struct {
+  buf    []buftype
+  curcl  int
+  curln  int
+  lastln int
+}
+
 /* const declarations for vici */
 const TABS  = 4      /* TAB width */
 const TABR  = ' '    /* TAB replace char */
@@ -86,10 +93,10 @@ var KEYWORDS = []string {
   "return",
 }
 
+var unst []edst       /* undo buffer */
+var rest []edst       /* redo buffer */
 var buf[]buftype      /* editor's buffer */
 var cpb[]buftype      /* copy buffer */
-var ubf[]buftype      /* undo buffer */
-var ox, oy, ol int    /* restore cursor position and last line after undo/redo */
 var hl int            /* syntax highlight toggler (visual mode) */
 var auto_paren int    /* auto close paren */
 var mode int          /* visual/command mode toggler */
