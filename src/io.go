@@ -138,6 +138,8 @@ func readkey() {
         case 'u': execcom("u")
         case ':': cprompt()
         case '/': cprompt()
+        case 'n': execcom("//")
+        case 'N': execcom("\\\\")
         case 'k': if curln > 1 { curln = prevln(curln) }
         case 'j': if curln < lastln { curln = nextln(curln) }
         case 'h': curcl = prevcl(curcl)
