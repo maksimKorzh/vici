@@ -95,7 +95,7 @@ func readkey() {
         case ':': cprompt()
         case '/': cprompt()
         case 'i': execcom("i")
-        case 'r': execcom("R"); dostat(); termbox.Flush(); readkey(); mode = VIEW
+        case 'r': execcom("R"); dostat(); termbox.Flush(); readkey(); curcl -= 1; mode = VIEW
         case 'R': execcom("R")
         case 'H': execcom("H")
         case 'A': execcom("A")
