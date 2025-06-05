@@ -16,7 +16,7 @@ and should be treated as **visual ed**, which essentially it is.
  - rudimentary syntax highlighting
  - unlimited undo/redo
 
-# Commands (:)
+# Commands
 
        NAVIGATION:
 
