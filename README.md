@@ -27,6 +27,12 @@ and should be treated as **visual ed**, which essentially it is.
     : .+10           scroll down 10 lines
     : .-10           scroll up 10 lines
     : $-5            scroll to 5 lines before the last line
+    : h              move cursor left
+    : j              move cursor down
+    : k              move cursor up
+    : l              move cursor right
+    : <              go to first char in line
+    : >              go to last char in line
 
        EDIT:
 
@@ -37,14 +43,6 @@ and should be treated as **visual ed**, which essentially it is.
     : x - delete char under the cursor
     : u - undo last change
     : U - redo last change
-    : 1 - go to the first line
-    : $ - go to the last line
-    : h - move cursor left
-    : j - move cursor down
-    : k - move cursor up
-    : l - move cursor right
-    : < - go to first char in line
-    : > - go to last char in line
 
        COPY / PASTE:
 
@@ -88,6 +86,8 @@ there are, however, a few exceptions, they are listed below:
       Ctrl-u or PgUp - scroll 4 screen rows upwards
            0 or HOME - move cursor to the begining of the current line
             $ or END - move cursor to the end of the current line
+                   g - go to first line
+                   G - go to last line
 
 # Usage
     $ vici                # opens editor with 'out.txt' source file name
