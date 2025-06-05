@@ -76,7 +76,7 @@ and should be treated as **visual ed**, which essentially it is.
 
 # Shortcuts
 Most of the commands are working as shortcuts, e.g. while
-being in NORMAL mode press 'i' to shortcut 'i' command to
+being in NORMAL mode press **i** to shortcut **i** command to
 enter INSERT mode, there are, however a few exceptions, they
 are listed below:
 
