@@ -88,8 +88,13 @@ func dlrune() {
 
 /* lnjoin -- join current line to previous */
 func lnjoin() {
-  for curcl > 0 { dlrune() }
-  if curln > 1 { dlrune() }
+  if curln+1 > lastln { return }
+  lline := buf[curln].txt
+  rline := buf[curln+1].txt
+  curcl = lnlen()
+  buf[curln].txt = lline + rline
+  stat := OK
+  lndelete(curln+1, curln+1, &stat)
 }
 
 /* lndelete -- delete lines n1 through n2 */

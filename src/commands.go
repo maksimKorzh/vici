@@ -218,6 +218,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
     }
   } else if lin[*i] == JCMD {
     lnjoin()
+    dirty = true
     *status = OK
   } else if lin[*i] == HCMD {
     hl ^= 1
