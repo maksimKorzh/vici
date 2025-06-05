@@ -90,12 +90,6 @@ are listed below:
            0 or HOME - move cursor to the begining of the current line
             $ or END - move cursor to the end of the current line
 
-# Commands
-    See GNU ed commands for reference, all but global
-    commands are working just like in GNU ed, substitute
-    command acts globally by default but can be limited
-    if prefixed by the line numbers range
-
 # Usage
     $ vici                # opens editor with 'out.txt' source file name
     $ vici my_file.txt    # opens editor with 'my_file.txt' if it exists,
