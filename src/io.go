@@ -135,6 +135,8 @@ func readkey() {
         case termbox.KeyBackspace2: dlrune()
         case termbox.KeyEnter: inrune('\n')
       }
+    } else if mode == REPLACE {
+      if ev.Key == termbox.KeySpace { rerune(' ') }
     }
   }
   if curcl > lnlen() { curcl = lnlen() }
