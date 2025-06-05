@@ -84,8 +84,7 @@ Ctrl-d/PgDown - scroll 4 screen rows downwards
     : 10,23t41       copy lines 10,23 inclusive after line 41
     : 10,23y         copy lines 10,23 inclusive to copy buffer
     : 10,23d         cut lines 10,23 inclusive to copy buffer
-    : 41             paste content of the copy buffer after line 41
-    : u              undo/redo last change
+    : 41p            paste content of the copy buffer after line 41
 
 # Usage
     $ vici                # opens editor with 'out.txt' source file name
