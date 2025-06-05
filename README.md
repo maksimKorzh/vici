@@ -20,57 +20,57 @@ and should be treated as **visual ed**, which essentially it is.
 
        NAVIGATION:
 
-    : 1               go to the first line
-    : $               go to the last line
-    : 12              go to line number 12
-    : .               go to the current line (does nothing, used in expressions)
-    : .+10            scroll down 10 lines
-    : .-10            scroll up 10 lines
-    : $-5             scroll to 5 lines before the last line
-    : h               move cursor left
-    : j               move cursor down
-    : k               move cursor up
-    : l               move cursor right
-    : <               go to first char in line
-    : >               go to last char in line
+    : 1                go to the first line
+    : $                go to the last line
+    : 12               go to line number 12
+    : .                go to the current line (does nothing, used in expressions)
+    : .+10             scroll down 10 lines
+    : .-10             scroll up 10 lines
+    : $-5              scroll to 5 lines before the last line
+    : h                move cursor left
+    : j                move cursor down
+    : k                move cursor up
+    : l                move cursor right
+    : <                go to first char in line
+    : >                go to last char in line
 
        EDIT:
 
-    : i               switch to INSERT mode
-    : R               switch to REPLACE mope
-    : A               go to last char in line, switch to INSERT mode
-    : J               join next line to current one
-    : x               delete char under the cursor
-    : u               undo last change
-    : U               redo last change
+    : i                switch to INSERT mode
+    : R                switch to REPLACE mope
+    : A                go to last char in line, switch to INSERT mode
+    : J                join next line to current one
+    : x                delete char under the cursor
+    : u                undo last change
+    : U                redo last change
 
        COPY / PASTE:
 
-    : 10,23y          copy lines 10,23 inclusive to copy buffer
-    : 10,23d          cut lines 10,23 inclusive to copy buffer
-    : 41p             paste content of the copy buffer after line 41
+    : 10,23y           copy lines 10,23 inclusive to copy buffer
+    : 10,23d           cut lines 10,23 inclusive to copy buffer
+    : 41p              paste content of the copy buffer after line 41
 
        FIND / REPLACE:
 
-    : /pat/           scroll to first "pat" occurrence ("pat" can be regexp )
-    : /pat/;//        scroll to the second "pat" occurrence
-    : //              scroll to the next "pat" occurrence
-    : \\              scroll to the previous "pat" occurence
-    : s/pat/sub/      substitute "pat" with "sub" globally ("pat" can be regexp)
-    : 2,5s/pat/sub/   substitute "pat" with "sub" within lines 2,5 inclusive
+    : /pat/            scroll to first "pat" occurrence ("pat" can be regexp )
+    : /pat/;//         scroll to the second "pat" occurrence
+    : //               scroll to the next "pat" occurrence
+    : \\               scroll to the previous "pat" occurence
+    : s/pat/sub/       substitute "pat" with "sub" globally ("pat" can be regexp)
+    : 2,5s/pat/sub/    substitute "pat" with "sub" within lines 2,5 inclusive
 
        I/O:
 
-    : e file.txt      load "file.txt" to the buffer
-    : r file.txt      insert content of the "file.txt" to the current line in buffer
-    : f file.txt      set current file name to "file.txt"
-    : w file.txt      save file as "file.txt"
-    : w               save current file
-    : q               exit from editor
+    : e file.txt       load "file.txt" to the buffer
+    : r file.txt       insert content of the "file.txt" to the current line in buffer
+    : f file.txt       set current file name to "file.txt"
+    : w file.txt       save file as "file.txt"
+    : w                save current file
+    : q                exit from editor
 
       MISC:
 
-    : H              toggle syntax highlighting if available
+    : H                toggle syntax highlighting if available
 
 # Shortcuts
 Most of the commands are working as shortcuts, e.g. while
@@ -91,9 +91,9 @@ there are, however, a few exceptions, they are listed below:
                    G   go to last line
 
 # Usage
-    $ vici                # opens editor with 'out.txt' source file name
-    $ vici my_file.txt    # opens editor with 'my_file.txt' if it exists,
-                          # otherwise sets source filename to 'my_file.txt'
+    $ vici             opens editor with 'out.txt' source file name
+    $ vici file.txt    opens editor with 'my_file.txt' if it exists,
+                       otherwise sets source filename to **file.txt**
 
 # Latest Release
 https://github.com/maksimKorzh/vici/releases/
