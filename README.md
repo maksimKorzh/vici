@@ -91,9 +91,9 @@ there are, however, a few exceptions, they are listed below:
                    G   go to last line
 
 # Usage
-    $ vici             open editor with **out.txt** source file name
-    $ vici file.txt    open editor with **file.txt** if it exists,
-                       otherwise set source filename to **file.txt**
+    $ vici             open editor with "out.txt" source file name
+    $ vici file.txt    open editor with "file.txt" if it exists,
+                       otherwise set source filename to "file.txt"
 
 # Latest Release
 https://github.com/maksimKorzh/vici/releases/
