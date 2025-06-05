@@ -86,6 +86,7 @@ there are, however, a few exceptions, they are listed below:
       Ctrl-u or PgUp - scroll 4 screen rows upwards
            0 or HOME - move cursor to the begining of the current line
             $ or END - move cursor to the end of the current line
+            r <char> - replace single char
                    g - go to first line
                    G - go to last line
 
