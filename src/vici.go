@@ -19,7 +19,6 @@ func main() {
   curln = lastln
   dirty = false
   hl = 1
-  backup()
   for {
     doshow(true)
     if len(buf) > 1 {

@@ -42,29 +42,35 @@ const (
   SEMICOL  = ';'
   CURLINE  = '.'
   PERIOD   = '.'
-  LASTLINE = 'G'
+  LASTLINE = '$'
   SCAN     = '/'
   BACKSCAN = '\\'
   PLUS     = '+'
   MINUS    = '-'
   NEWLINE  = '\n'
-  PCMD     = 'p'
-  QCMD     = 'q'
-  JCMD     = 'j'
-  NCMD     = 'n'
-  DCMD     = 'd'
-  CCMD     = 'J'
-  MCMD     = 'm'
-  TCMD     = 't'
-  YCMD     = 'y'
-  SCMD     = 's'
-  HCMD     = 'h'
-  ECMD     = 'e'
-  FCMD     = 'f'
-  RCMD     = 'r'
-  OCMD     = 'R'
-  UCMD     = 'u'
-  WCMD     = 'w'
+  iCMD     = 'i'
+  ACMD     = 'A'
+  pCMD     = 'p'
+  qCMD     = 'q'
+  JCMD     = 'J'
+  dCMD     = 'd'
+  yCMD     = 'y'
+  sCMD     = 's'
+  HCMD     = 'H'
+  eCMD     = 'e'
+  fCMD     = 'f'
+  rCMD     = 'r'
+  RCMD     = 'R'
+  uCMD     = 'u'
+  UCMD     = 'U'
+  wCMD     = 'w'
+  xCMD     = 'x'
+  hCMD     = 'h'
+  jCMD     = 'j'
+  kCMD     = 'k'
+  lCMD     = 'l'
+  ZCMD     = '<'
+  XCMD     = '>'
 )
 
 const (
@@ -98,7 +104,6 @@ var rest []edst       /* redo buffer */
 var buf[]buftype      /* editor's buffer */
 var cpb[]buftype      /* copy buffer */
 var hl int            /* syntax highlight toggler (visual mode) */
-var auto_paren int    /* auto close paren */
 var mode int          /* visual/command mode toggler */
 var dirty bool        /* modified flag */
 var lnwidth int       /* line number width (visual mode) */

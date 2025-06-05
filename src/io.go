@@ -82,82 +82,48 @@ func readkey() {
   } else if ev.Key == termbox.KeyCtrlD {
     execcom(SCRUP)
   } else if ev.Key == termbox.KeyCtrlR {
-    execcom("R")
+    execcom("U")
   } else if ev.Key == termbox.KeyEsc {
     mode = VIEW
-    auto_paren = 0
   } else if ev.Ch != 0 {
     if mode == EDIT {
       inrune(rune(ev.Ch))
-      if auto_paren == 1 {
-        switch ev.Ch {
-          case '(': inrune(rune(')')); curcl = prevcl(curcl)
-          case '[': inrune(rune(']')); curcl = prevcl(curcl)
-          case '\'': inrune(rune('\'')); curcl = prevcl(curcl)
-          case '"': inrune(rune('"')); curcl = prevcl(curcl)
-          case '{':
-            inrune(rune('}'))
-            curcl = prevcl(curcl)
-            inrune(rune('\n'))
-            inrune(rune('\n'))
-            curln = prevln(curln)
-        }
-      }
     } else if mode == REPLACE {
       rerune(rune(ev.Ch))
     } else {
       switch ev.Ch {
-        case 'q': execcom("q")
-        case 'w': execcom("w")
-        case 'i': mode = EDIT; backup()
-        case 'r': mode = REPLACE; backup()
-        case 's': execcom("h")
-        case 'a': auto_paren = 1
-        case 'A': curcl = lnlen(); mode = EDIT; backup()
-        case 'g': execcom("1")
-        case 'G': execcom("G")
-        case 'y': execcom("y")
-        case 'J': execcom("J")
-        case 'x':
-          if curcl < lnlen() {
-            curcl++
-            dlrune()
-          }
-        case 'p':
-          if curln > 1 {
-            curln = prevln(curln)
-            execcom("p")
-          } else {
-            execcom("p")
-          }
-        case 'd':
-          if curln > 1 {
-            execcom("d")
-            if curln != lastln { curln = prevln(curln) }
-          } else if curln == 1 {
-            buf[curln].txt = ""
-          }
-        case 'u': execcom("u")
         case ':': cprompt()
         case '/': cprompt()
+        case 'i': execcom("i")
+        case 'R': execcom("R")
+        case 'H': execcom("H")
+        case 'A': execcom("A")
+        case 'g': execcom("1")
+        case 'G': execcom("$")
+        case 'y': execcom("y")
+        case 'J': execcom("J")
+        case 'x': execcom("x")
+        case 'p': execcom("p")
+        case 'd': execcom("d")
+        case 'u': execcom("u")
         case 'n': execcom("//")
         case 'N': execcom("\\\\")
-        case 'k': if curln > 1 { curln = prevln(curln) }
-        case 'j': if curln < lastln { curln = nextln(curln) }
-        case 'h': curcl = prevcl(curcl)
-        case 'l': curcl = nextcl(curcl)
-        case '0': curcl = 0
-        case '$': curcl = lnlen()
+        case 'h': execcom("h")
+        case 'j': execcom("j")
+        case 'k': execcom("k")
+        case 'l': execcom("l")
+        case '0': execcom("<")
+        case '$': execcom(">")
       }
     }
   } else {
     switch ev.Key {
-      case termbox.KeyArrowUp: if curln > 1 { curln = prevln(curln) }
-      case termbox.KeyArrowDown: if curln < lastln { curln = nextln(curln) }
-      case termbox.KeyArrowLeft: curcl = prevcl(curcl)
-      case termbox.KeyArrowRight: curcl = nextcl(curcl)
-      case termbox.KeyHome: curcl = 0
-      case termbox.KeyEnd: curcl = lnlen()
+      case termbox.KeyArrowUp: execcom("k")
+      case termbox.KeyArrowDown: execcom("j")
+      case termbox.KeyArrowLeft: execcom("h")
+      case termbox.KeyArrowRight: execcom("l")
+      case termbox.KeyHome: execcom("<")
+      case termbox.KeyEnd: execcom(">")
       case termbox.KeyPgup: execcom(SCRDN)
       case termbox.KeyPgdn: execcom(SCRUP)
     }

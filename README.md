@@ -20,7 +20,7 @@ and should be treated as "visual ed", which essentially it is.
           ESC - enter the 'VIEW' mode
             i - enter the 'EDIT' mode
             A - go to last char in line, enter the 'EDIT' mode
-            r - enter the 'REPLACE' mode
+            R - enter the 'REPLACE' mode
             d - cut current line to copy buffer
             y - copy current line to copy buffer
             a - enable autocomplete for parens & quotes
@@ -29,7 +29,7 @@ and should be treated as "visual ed", which essentially it is.
             x - delete char under the cursor
             u - undo last change
        Ctrl-R - redo last change
-            s - toggle syntax highlighting
+            H - toggle syntax highlighting
             g - go to the first line
             G - go to the last line
             n - find next pattern
@@ -80,8 +80,6 @@ Ctrl-d/PgDown - scroll 4 screen rows downwards
 
        Copy/Paste/Move
 
-    : 10,23m41       move lines 10,23 inclusive after line 41
-    : 10,23t41       copy lines 10,23 inclusive after line 41
     : 10,23y         copy lines 10,23 inclusive to copy buffer
     : 10,23d         cut lines 10,23 inclusive to copy buffer
     : 41p            paste content of the copy buffer after line 41

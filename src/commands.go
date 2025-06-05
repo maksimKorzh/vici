@@ -179,9 +179,8 @@ func getword(s string, i *int, out *string) int {
 /* docmd -- handle all commands except globals */
 func docmd (lin string, i *int, status *stcode) stcode {
   var fil, sub string
-  var line3 int
   *status = ERR;
-  if strings.Contains("iacsdcptmjre", string(lin[*i])) { backup() }
+  if strings.Contains("iAsxdptmJRe", string(lin[*i])) { backup() }
   if lin[*i] == COMMA {
     line1 = 1
     line2 = lastln
@@ -194,12 +193,19 @@ func docmd (lin string, i *int, status *stcode) stcode {
       curln = line2
       *status = OK
     }
-  } else if lin[*i] == QCMD {
+  } else if lin[*i] == iCMD {
+    mode = EDIT
+  } else if lin[*i] == RCMD {
+    mode = REPLACE
+  } else if lin[*i] == ACMD {
+    curcl = lnlen()
+    mode = EDIT
+  } else if lin[*i] == qCMD {
     if lin[*i+1] == NEWLINE && nlines == 0 {
       termbox.Close()
       os.Exit(0)
     }
-  } else if lin[*i] == DCMD {
+  } else if lin[*i] == dCMD {
     *i++
     if setdef(curln, curln, status) == OK {
       cp(line1, line2)
@@ -213,40 +219,16 @@ func docmd (lin string, i *int, status *stcode) stcode {
   } else if lin[*i] == JCMD {
     lnjoin()
     *status = OK
-  } else if lin[*i] == NCMD {
-    inrune('\n')
-    *status = OK
-  } else if lin[*i] == CCMD {
-    lnjoin()
-    *status = OK
   } else if lin[*i] == HCMD {
     hl ^= 1
     *status = OK
-  } else if lin[*i] == MCMD {
-    *i++
-    if getone(lin, i, &line3, status) == ENDDATA { *status = ERR }
-    if *status == OK {
-      if setdef(curln, curln, status) == OK {
-        *status = move(&line3)
-        if *status == OK { dirty = true }
-      }
-    }
-  } else if lin[*i] == TCMD {
-    *i++
-    if getone(lin, i, &line3, status) == ENDDATA { *status = ERR }
-    if *status == OK {
-      if setdef(curln, curln, status) == OK {
-        *status = dup(&line3)
-        if *status == OK { dirty = true }
-      }
-    }
-  } else if lin[*i] == YCMD {
+  } else if lin[*i] == yCMD {
     *i++
     if setdef(curln, curln, status) == OK {
       cp(line1, line2)
       *status = OK
     }
-  } else if lin[*i] == PCMD {
+  } else if lin[*i] == pCMD {
     *i++
     curln = line2
     if len(cpb) > 0 {
@@ -258,7 +240,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
     } else {
       *status = ERR
     }
-  } else if lin[*i] == SCMD {
+  } else if lin[*i] == sCMD {
     *i++
     if optpat(lin, i) == OK {
       if *i < len(lin) {
@@ -272,7 +254,7 @@ func docmd (lin string, i *int, status *stcode) stcode {
         }
       }
     }
-  } else if lin[*i] == ECMD {
+  } else if lin[*i] == eCMD {
     if nlines == 0 {
       if getfn(lin, i, &fil) == OK {
         savefile = fil
@@ -280,19 +262,19 @@ func docmd (lin string, i *int, status *stcode) stcode {
         *status = doread(0, fil)
       }
     }
-  } else if lin[*i] == FCMD {
+  } else if lin[*i] == fCMD {
     if nlines == 0 {
       if getfn(lin, i, &fil) == OK {
         savefile = fil
         *status = OK
       }
     }
-  } else if lin[*i] == RCMD {
+  } else if lin[*i] == rCMD {
     if getfn(lin, i, &fil) == OK {
       *status = doread(line2, fil)
       if *status == OK { dirty = true }
     }
-  } else if lin[*i] == WCMD {
+  } else if lin[*i] == wCMD {
     if getfn(lin, i, &fil) == OK {
       if setdef(1, lastln, status) == OK {
         *status = dowrite(line1, line2, fil)
@@ -305,18 +287,40 @@ func docmd (lin string, i *int, status *stcode) stcode {
         os.Exit(0)
       }
     }
-  } else if lin[*i] == UCMD {
+  } else if lin[*i] == uCMD {
     if lin[*i+1] == NEWLINE && nlines == 0 {
       dirty = true
       undo()
       *status = OK
     }
-  } else if lin[*i] == OCMD {
+  } else if lin[*i] == UCMD {
     if lin[*i+1] == NEWLINE && nlines == 0 {
       dirty = true
       redo()
       *status = OK
     }
+  } else if lin[*i] == xCMD {
+    if curcl < lnlen() {
+      curcl++
+      dlrune()
+      *status = OK
+    }
+  } else if lin[*i] == hCMD {
+    curcl = prevcl(curcl)
+    *status = OK
+  } else if lin[*i] == jCMD {
+    if curln < lastln { curln = nextln(curln) }
+    *status = OK
+  } else if lin[*i] == kCMD {
+    if curln > 1 { curln = prevln(curln) }
+    *status = OK
+  } else if lin[*i] == lCMD {
+    curcl = nextcl(curcl)
+    *status = OK
+  } else if lin[*i] == ZCMD {
+    curcl = 0
+  } else if lin[*i] == XCMD {
+    curcl = lnlen()
   }
   return *status
 }

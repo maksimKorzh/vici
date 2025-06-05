@@ -273,12 +273,7 @@ func nextcl(n int) int {
   if curcl < lnlen() {
     return n + 1
   } else {
-    if curln < lastln {
-      curln = nextln(curln)
-      return 0
-    } else {
-      return lnlen()
-    }
+    return lnlen()
   }
 }
 
@@ -287,12 +282,7 @@ func prevcl(n int) int {
   if curcl > 0 {
     return n - 1
   } else {
-    if curln > 1 {
-      curln = prevln(curln)
-      return lnlen()
-    } else {
-      return 0
-    }
+    return 0
   }
 }
 
@@ -407,17 +397,15 @@ func dorender() {
 /* dostat -- display status bar */
 func dostat() {
   var modstat string
-  var parenst string
   flstat := savefile + " - " + strconv.Itoa(lastln) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
   if mode == EDIT { modstat = " I "} else if mode == REPLACE {
   modstat = " R " } else if mode == VIEW { modstat = " N " } else { modstat = " C " }
-  if auto_paren == 1 { parenst = " {}" }
   curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "
-  uspace := len(modstat) + len(flstat) + len(curstat) + len(parenst)
+  uspace := len(modstat) + len(flstat) + len(curstat)
   spaces := ""
   if cols - uspace >= 1 { spaces = strings.Repeat(" ", cols - uspace) }
-  message := parenst + modstat + flstat + spaces + curstat
+  message := modstat + flstat + spaces + curstat
   msg(0, rows, NCOL, WCOL, message)
 }
 
