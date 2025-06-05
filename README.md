@@ -1,5 +1,5 @@
 # VICI
-Minimalist cross-platform terminal based text editor
+Minimalist cross-platform terminal based VIM-like text editor
 
 # Screenshot
 ![IMAGE ALT TEXT HERE](https://raw.githubusercontent.com/maksimKorzh/vici/main/assets/vici.png)
