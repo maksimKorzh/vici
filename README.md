@@ -12,45 +12,13 @@ and should be treated as "visual ed", which essentially it is.
 
 # Features
  - visual text editing
- - "ed" command set
+ - ED command set + some VIM motion commands
  - rudimentary syntax highlighting
  - unlimited undo/redo
 
-# Shortcuts
-          ESC - enter the 'VIEW' mode
-            i - enter the 'EDIT' mode
-            A - go to last char in line, enter the 'EDIT' mode
-            R - enter the 'REPLACE' mode
-            d - cut current line to copy buffer
-            y - copy current line to copy buffer
-            a - enable autocomplete for parens & quotes
-            p - paste line from copy buffer
-            J - join current line to previous one
-            x - delete char under the cursor
-            u - undo last change
-       Ctrl-R - redo last change
-            H - toggle syntax highlighting
-            g - go to the first line
-            G - go to the last line
-            n - find next pattern
-            N - find prev pattern
-          :,/ - execute command
-  hjkl/Arrows - move cursor
-Ctrl-d/PgDown - scroll 4 screen rows downwards
-  Ctrl-u/PgUp - scroll 4 screen rows upwards
-       0/HOME - move cursor to the begining of the current line
-        $/END - move cursor to the end of the current line
+# Commands (:)
 
-# Commands
-    See GNU ed commands for reference, all but global
-    commands are working just like in GNU ed, substitute
-    command acts globally by default but can be limited
-    if prefixed by the line numbers' range
-
-    While being in 'VIEW' mode, press ":" to enter command mode.
-    Input command and press enter to execute it.
-
-       Navigation:
+       NAVIGATION:
 
     : 1              go to the first line
     : $              go to the last line
@@ -60,7 +28,31 @@ Ctrl-d/PgDown - scroll 4 screen rows downwards
     : .-10           scroll up 10 lines
     : $-5            scroll to 5 lines before the last line
 
-       Find/Replace:
+       EDIT:
+
+    : i - switch to INSERT mode
+    : R - switch to REPLACE mope
+    : A - go to last char in line, switch to INSERT mode
+    : J - join current line to previous one
+    : x - delete char under the cursor
+    : u - undo last change
+    : U - redo last change
+    : 1 - go to the first line
+    : $ - go to the last line
+    : h - move cursor left
+    : j - move cursor down
+    : k - move cursor up
+    : l - move cursor right
+    : < - go to first char in line
+    : > - go to last char in line
+
+       COPY / PASTE:
+
+    : 10,23y         copy lines 10,23 inclusive to copy buffer
+    : 10,23d         cut lines 10,23 inclusive to copy buffer
+    : 41p            paste content of the copy buffer after line 41
+
+       FIND / REPLACE:
 
     : /pat/          scroll to first "pat" occurrence ("pat" can be regexp )
     : /pat/;//       scroll to the second "pat" occurrence
@@ -78,11 +70,31 @@ Ctrl-d/PgDown - scroll 4 screen rows downwards
     : w              save current file
     : q              exit from editor
 
-       Copy/Paste/Move
+      MISC:
 
-    : 10,23y         copy lines 10,23 inclusive to copy buffer
-    : 10,23d         cut lines 10,23 inclusive to copy buffer
-    : 41p            paste content of the copy buffer after line 41
+    : H              toggle syntax highlighting if available
+
+# Shortcuts
+Most of the commands are working as shortcuts, e.g. while
+being in NORMAL mode press 'i' to shortcut 'i' command to
+enter INSERT mode, there are, however a few exceptions, they
+are listed below:
+
+          ESC - enter the NORMAL mode
+       : or / - execute command
+            n - find next pattern
+            N - find prev pattern
+       Arrows - move cursor
+       PgDown - scroll 4 screen rows downwards
+         PgUp - scroll 4 screen rows upwards
+         HOME - move cursor to the begining of the current line
+          END - move cursor to the end of the current line
+
+# Commands
+    See GNU ed commands for reference, all but global
+    commands are working just like in GNU ed, substitute
+    command acts globally by default but can be limited
+    if prefixed by the line numbers range
 
 # Usage
     $ vici                # opens editor with 'out.txt' source file name
