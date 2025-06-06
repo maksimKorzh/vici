@@ -109,14 +109,14 @@ func optpat(lin string, i *int) stcode {
   return OK
 }
 
-/* patscan -- find next occurrence of pattern after line n */
-func patscan (way rune, n *int) stcode {
+/* patscanl -- find next occurrence of pattern after line n */
+func patscanl (way rune, n *int) stcode {
   var done bool
   var line string
   var stat stcode
   *n = curln
   stat = ERR
-  done = false;
+  done = false
   for {
     if way == SCAN {
       *n = nextln(*n)
@@ -129,7 +129,13 @@ func patscan (way rune, n *int) stcode {
       stat = ERR
     } else {
       if r.MatchString(line) {
-        curcl = r.FindStringIndex(line)[0]
+        matches := r.FindAllStringIndex(line, -1)
+        if way == SCAN {
+          curcl = matches[0][0]
+        } else {
+          curcl = matches[len(matches)-1][0]
+          lncnt = len(matches)-1
+        }
         stat = OK
         done = true
       }
@@ -137,6 +143,48 @@ func patscan (way rune, n *int) stcode {
     if *n == curln || done { break }
   }
   return stat
+}
+
+/* patscanc -- find next occurrence of pattern in current line */
+func patscanc (way rune, n *int) stcode {
+  *n = curln
+  stat := ERR
+  line := buf[*n].txt
+  r, err := regexp.Compile(pat)
+  if err != nil {
+    stat = ERR
+  } else {
+    if r.MatchString(line) {
+      matches := r.FindAllStringIndex(line, -1)
+      if lncnt < 0 || lncnt > len(matches)-1 { lncnt = 0 }
+      if way == SCAN {
+        lncnt++
+        if lncnt == len(matches) {
+          lncnt = 0
+          return patscanl(way, n)
+        }
+      } else {
+        lncnt--
+        if lncnt < 0 {
+          lncnt = 0
+          return patscanl(way, n)
+        }
+      }
+      curcl = matches[lncnt][0]
+      stat = OK
+    }
+  }
+  if stat == ERR {
+    return patscanl(way, n)
+  } else {
+    return stat
+  }
+}
+
+/* patscan -- find next occurrence of pattern */
+func patscan (way rune, n *int) stcode {
+  patscanc(way, n)
+  return OK
 }
 
 /* setdef -- set defaulted line numbers */
