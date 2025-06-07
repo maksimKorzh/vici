@@ -99,7 +99,7 @@ func hlsyntax(col, row int, line string) {
   for i < len(line) {
     j := i
     if line[i] >= '0' && line[i] <= '9' {
-      msg(col, row, YCOL|BOLD, DCOL, pnum(line, &i))
+      msg(col, row, RCOL|BOLD, DCOL, pnum(line, &i))
     } else if line[i] == ' ' {
       msg(col, row, DCOL, DCOL, pblank(line, &i))
     } else if line[i] == '"' {
@@ -122,7 +122,7 @@ func hlsyntax(col, row int, line string) {
       msg(col, row, DCOL, DCOL, string(line[i]))
       i++
     } else if strings.Contains("+-*/=%<>:", string(line[i])) {
-      msg(col, row, MCOL|BOLD, DCOL, string(line[i]))
+      msg(col, row, DCOL, DCOL, string(line[i]))
       i++
     } else {
       tok := pword(line, &i)
@@ -150,7 +150,7 @@ func hlline(row int) {
     if len(buf) > 1 && curln > 0 {
       cell := termbox.GetCell(col, row-1)
       if col == tabcl - offcl+lnwidth {
-        termbox.SetCell(col, row-1, cell.Ch, WCOL, RCOL)
+        termbox.SetCell(col, row-1, cell.Ch, WCOL, BCOL)
       } else {
         termbox.SetCell(col, row-1, cell.Ch, DCOL, BCOL)
       }

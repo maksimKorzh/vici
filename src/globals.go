@@ -73,17 +73,31 @@ const (
   XCMD     = '>'
 )
 
+/* This is how you can define colorscheme */
+//const (
+//  DCOL = termbox.ColorDefault
+//  NCOL = termbox.ColorBlack
+//  WCOL = termbox.ColorWhite
+//  BCOL = termbox.ColorBlue
+//  GCOL = termbox.ColorGreen
+//  CCOL = termbox.ColorCyan
+//  RCOL = termbox.ColorRed
+//  YCOL = termbox.ColorYellow
+//  MCOL = termbox.ColorMagenta
+//  BOLD = termbox.AttrBold
+//)
+
 const (
   DCOL = termbox.ColorDefault
   NCOL = termbox.ColorBlack
   WCOL = termbox.ColorWhite
   BCOL = termbox.ColorBlue
-  GCOL = termbox.ColorGreen
-  CCOL = termbox.ColorCyan
-  RCOL = termbox.ColorRed
+  GCOL = termbox.ColorLightMagenta
+  CCOL = termbox.ColorDarkGray
+  RCOL = termbox.ColorYellow
   YCOL = termbox.ColorYellow
-  MCOL = termbox.ColorMagenta
-  BOLD = termbox.AttrBold
+  MCOL = termbox.ColorDarkGray
+  BOLD = 0
 )
 
 /* variables for vici */
