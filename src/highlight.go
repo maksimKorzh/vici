@@ -93,49 +93,49 @@ func pcomm(line string, i *int) string {
 func hlsyntax(col, row int, line string) {
   i := 0
   if len(line) != len([]rune(line)) {
-    msg(col, row, DCOL, DCOL, line)
+    msg(col, row, COL1, COL1, line)
     return
   }
   for i < len(line) {
     j := i
     if line[i] >= '0' && line[i] <= '9' {
-      msg(col, row, RCOL|BOLD, DCOL, pnum(line, &i))
+      msg(col, row, COL7|BOLD, COL1, pnum(line, &i))
     } else if line[i] == ' ' {
-      msg(col, row, DCOL, DCOL, pblank(line, &i))
+      msg(col, row, COL1, COL1, pblank(line, &i))
     } else if line[i] == '"' {
-      msg(col, row, YCOL, DCOL, pstr(line, &i))
+      msg(col, row, COL8, COL1, pstr(line, &i))
     } else if line[i] == '\'' {
-      msg(col, row, YCOL|BOLD, DCOL, pchr(line, &i))
+      msg(col, row, COL8|BOLD, COL1, pchr(line, &i))
     } else if line[i] == '/' || line[i] == '#' {
-      msg(col, row, MCOL|BOLD, DCOL, string(line[i]))
+      msg(col, row, COL9|BOLD, COL1, string(line[i]))
       if line[i] == '#' {
-        msg(col, row, MCOL|BOLD, DCOL, pcomm(line, &i))
+        msg(col, row, COL9|BOLD, COL1, pcomm(line, &i))
       }
       i++
       if i < len(line) {
         if line[i] == '/' || line[i] == '*' {
           i--
-          msg(col, row, MCOL|BOLD, DCOL, pcomm(line, &i))
+          msg(col, row, COL9|BOLD, COL1, pcomm(line, &i))
         }
       }
     } else if strings.Contains(".,(){}[]", string(line[i])) {
-      msg(col, row, DCOL, DCOL, string(line[i]))
+      msg(col, row, COL1, COL1, string(line[i]))
       i++
     } else if strings.Contains("+-*/=%<>:", string(line[i])) {
-      msg(col, row, DCOL, DCOL, string(line[i]))
+      msg(col, row, COL1, COL1, string(line[i]))
       i++
     } else {
       tok := pword(line, &i)
       iskw := false
       for _, kw := range KEYWORDS {
         if tok == kw {
-          msg(col, row, GCOL|BOLD, DCOL, tok)
+          msg(col, row, COL5|BOLD, COL1, tok)
           iskw = true
           break
         }
       }
       if iskw == false {
-        msg(col, row, DCOL, DCOL, tok)
+        msg(col, row, COL1, COL1, tok)
       }
     }
     col += i-j
@@ -150,13 +150,13 @@ func hlline(row int) {
     if len(buf) > 1 && curln > 0 {
       cell := termbox.GetCell(col, row-1)
       if col == tabcl - offcl+lnwidth {
-        termbox.SetCell(col, row-1, cell.Ch, WCOL, BCOL)
+        termbox.SetCell(col, row-1, cell.Ch, COL3, COL4)
       } else {
-        termbox.SetCell(col, row-1, cell.Ch, DCOL, BCOL)
+        termbox.SetCell(col, row-1, cell.Ch, COL1, COL4)
       }
     } else {
       lnoff := lnwidth - 2
-      msg(col, row, DCOL, BCOL, strings.Repeat(" ", lnoff) + "1" + strings.Repeat(" ", cols-1))
+      msg(col, row, COL1, COL4, strings.Repeat(" ", lnoff) + "1" + strings.Repeat(" ", cols-1))
       break
     }
   }

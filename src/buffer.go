@@ -383,17 +383,17 @@ func dorender() {
     if brow >= 1 && brow < len(buf) {
       lnnum := strconv.Itoa(brow)
       lnoff := lnwidth - len(lnnum)-1
-      msg(lnoff, row-1, CCOL, DCOL, lnnum)
+      msg(lnoff, row-1, COL6, COL1, lnnum)
       if offcl >= len(dbuf[brow].txt) { continue }
       line := ""
       line = dbuf[brow].txt[cloff(offcl, dbuf[brow].txt):]
       if hl == 1 && !strings.Contains(savefile, ".txt") && !strings.Contains(savefile, ".md") {
         hlsyntax(lnwidth, row-1, line)
       } else {
-        msg(lnwidth, row-1, DCOL, DCOL, line)
+        msg(lnwidth, row-1, COL1, COL1, line)
       } 
     } else if row-1 != 0 {
-      msg(0, row-1, BCOL, DCOL, "*")
+      msg(0, row-1, COL4, COL1, "*")
     }
   }
   hlline(curln-offrw)
@@ -411,7 +411,7 @@ func dostat() {
   spaces := ""
   if cols - uspace >= 1 { spaces = strings.Repeat(" ", cols - uspace) }
   message := modstat + flstat + spaces + curstat
-  msg(0, rows, NCOL, WCOL, message)
+  msg(0, rows, COL2, COL3, message)
 }
 
 /* doshow -- update display */
@@ -422,7 +422,7 @@ func doshow(resize bool) {
     if rows > 2 { rows-- }
   }
   lnwidth = len(strconv.Itoa(len(buf)-1))+1
-  termbox.Clear(DCOL, DCOL)
+  termbox.Clear(COL1, COL1)
   doscroll()
   dorender()
   dostat()

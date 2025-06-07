@@ -146,13 +146,13 @@ func readkey() {
 /* getline -- invoke prompt to execute commands */
 func getline(prompt string) string {
   doshow(false)
-  msg(0, rows+1, DCOL, DCOL, prompt)
+  msg(0, rows+1, COL1, COL1, prompt)
   termbox.SetCursor(1, rows+1)
   termbox.Flush()
   command := ""
   for {
     ev := getev()
-    msg(0, rows+1, DCOL, DCOL, prompt)
+    msg(0, rows+1, COL1, COL1, prompt)
     switch ev.Key {
       case termbox.KeyArrowUp: if curln > 1 { curln = prevln(curln) }; return ""
       case termbox.KeyArrowDown: if curln < lastln { curln = nextln(curln) }; return ""
@@ -165,7 +165,7 @@ func getline(prompt string) string {
     }
     if ev.Ch != 0 {
       command += string(ev.Ch)
-      msg(1, rows+1, DCOL, DCOL, strings.Replace(command, "\t", " ", -1))
+      msg(1, rows+1, COL1, COL1, strings.Replace(command, "\t", " ", -1))
     };
     cmdlen := 0
     for _,ch := range command { if ch > 0 { cmdlen++} }
@@ -189,7 +189,7 @@ func cprompt() {
     status = docmd(lin, &i, &status)
   }
   if status == ERR {
-    msg(0, rows+1, DCOL, DCOL, "?" + strings.Repeat(" ", cols-1))
+    msg(0, rows+1, COL1, COL1, "?" + strings.Repeat(" ", cols-1))
     curln = min(cursave, lastln)
     termbox.SetCursor(1, rows+1)
     termbox.Flush()

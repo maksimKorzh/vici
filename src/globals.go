@@ -75,28 +75,28 @@ const (
 
 /* This is how you can define colorscheme */
 //const (
-//  DCOL = termbox.ColorDefault
-//  NCOL = termbox.ColorBlack
-//  WCOL = termbox.ColorWhite
-//  BCOL = termbox.ColorBlue
-//  GCOL = termbox.ColorGreen
-//  CCOL = termbox.ColorCyan
-//  RCOL = termbox.ColorRed
-//  YCOL = termbox.ColorYellow
-//  MCOL = termbox.ColorMagenta
+//  COL1 = termbox.ColorDefault
+//  COL2 = termbox.ColorBlack
+//  COL3 = termbox.ColorWhite
+//  COL4 = termbox.ColorBlue
+//  COL5 = termbox.ColorGreen
+//  COL6 = termbox.ColorCyan
+//  COL7 = termbox.ColorYellow
+//  COL8 = termbox.ColorYellow
+//  COL9 = termbox.ColorMagenta
 //  BOLD = termbox.AttrBold
 //)
 
 const (
-  DCOL = termbox.ColorDefault
-  NCOL = termbox.ColorBlack
-  WCOL = termbox.ColorWhite
-  BCOL = termbox.ColorBlue
-  GCOL = termbox.ColorLightMagenta
-  CCOL = termbox.ColorDarkGray
-  RCOL = termbox.ColorYellow
-  YCOL = termbox.ColorYellow
-  MCOL = termbox.ColorDarkGray
+  COL1 = termbox.ColorDefault
+  COL2 = termbox.ColorBlack
+  COL3 = termbox.ColorWhite
+  COL4 = termbox.ColorBlue
+  COL5 = termbox.ColorLightMagenta
+  COL6 = termbox.ColorDarkGray
+  COL7 = termbox.ColorYellow
+  COL8 = termbox.ColorYellow
+  COL9 = termbox.ColorDarkGray
   BOLD = 0
 )
 
