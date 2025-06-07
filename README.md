@@ -81,6 +81,7 @@ there are, however, a few exceptions, they are listed below:
               : or /   execute command
                    n   find next pattern
                    N   find prev pattern
+              Ctrl-r   redo last change
               Arrows   move cursor
     Ctrl-d or PgDown   scroll 4 screen rows downwards
       Ctrl-u or PgUp   scroll 4 screen rows upwards
