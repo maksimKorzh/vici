@@ -134,7 +134,6 @@ func patscanl (way rune, n *int) stcode {
           curcl = matches[0][0]
         } else {
           curcl = matches[len(matches)-1][0]
-          lncnt = len(matches)-1
         }
         stat = OK
         done = true
@@ -149,29 +148,25 @@ func patscanl (way rune, n *int) stcode {
 func patscanc (way rune, n *int) stcode {
   *n = curln
   stat := ERR
-  line := buf[*n].txt
+  var line string
+  if way == SCAN {
+    line = buf[*n].txt[curcl+1:]
+  } else {
+    line = buf[*n].txt[:curcl]
+  }
   r, err := regexp.Compile(pat)
   if err != nil {
     stat = ERR
   } else {
     if r.MatchString(line) {
       matches := r.FindAllStringIndex(line, -1)
-      if lncnt < 0 || lncnt > len(matches)-1 { lncnt = 0 }
       if way == SCAN {
-        lncnt++
-        if lncnt == len(matches) {
-          lncnt = 0
-          return patscanl(way, n)
-        }
+        curcl = curcl + 1 + matches[0][0]
+        stat = OK
       } else {
-        lncnt--
-        if lncnt < 0 {
-          lncnt = 0
-          return patscanl(way, n)
-        }
+        curcl = matches[len(matches)-1][0]
+        stat = OK
       }
-      curcl = matches[lncnt][0]
-      stat = OK
     }
   }
   if stat == ERR {

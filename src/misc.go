@@ -2,6 +2,7 @@ package main
 
 import "os"
 import "fmt"
+import "strconv"
 import "github.com/nsf/termbox-go"
 import "github.com/mattn/go-runewidth"
 
@@ -46,6 +47,16 @@ func getst(status stcode) string {
   return descr
 }
 
+/* itos - convert integer to string if possible */
+func itos(v interface{}) string {
+  switch val := v.(type) {
+  case int:
+    return strconv.Itoa(val)
+  default:
+    return fmt.Sprintf("%v", val) // fallback, generic
+  }
+}
+
 /* msg -- print message on screen (visual mode) */
 func msg(x, y int, fg, bg termbox.Attribute, msg string) {
   for _, c := range msg {
@@ -59,4 +70,11 @@ func msg(x, y int, fg, bg termbox.Attribute, msg string) {
       x += runewidth.RuneWidth(c)
     }
   }
+}
+
+/* debug -- print debug message (visual mode) */
+func debug(message interface{}) {
+  msg(0, rows-1, COL3, COL2, itos(message))
+  termbox.Flush()
+  getev()
 }

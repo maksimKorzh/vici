@@ -126,7 +126,6 @@ var offrw, offcl int  /* offsets for scrolling (visual mode) */
 var line1 int         /* first line number */
 var line2 int         /* second line number */
 var nlines int        /* # of line numbers specified */
-var lncnt int         /* pattern match index on the single line */
 var curln int         /* current line -- value of dot */
 var curcl int         /* current column (visual mode) */
 var tabcl int         /* current column to render assuming TAB chars */
