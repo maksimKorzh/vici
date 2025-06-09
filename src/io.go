@@ -115,6 +115,9 @@ func readkey() {
         case 'l': execcom("l")
         case '0': execcom("<")
         case '$': execcom(">")
+        case 'b': execcom("\\[a-zA-Z0-9_]+\\")
+        case 'e': execcom("/\\w\\W/")
+        case 'w': if execcom("/\\W\\w/") == OK { curcl = nextcl(curcl) }
       }
     }
   } else {

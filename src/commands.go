@@ -150,7 +150,11 @@ func patscanc (way rune, n *int) stcode {
   stat := ERR
   var line string
   if way == SCAN {
-    line = buf[*n].txt[curcl+1:]
+    if curcl == lnlen() {
+      line = ""
+    } else {
+      line = buf[*n].txt[curcl+1:]
+    }
   } else {
     line = buf[*n].txt[:curcl]
   }
@@ -370,11 +374,12 @@ func docmd (lin string, i *int, status *stcode) stcode {
 }
 
 /* execcom -- execute command (visual mode) */
-func execcom(com string) {
+func execcom(com string) stcode {
   var i int
   var status stcode
   lin = com + "\n"
   if getlist(lin, &i, &status) == OK {
     docmd(lin, &i, &status)
   }
+  return status
 }
