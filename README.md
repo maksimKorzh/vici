@@ -73,9 +73,10 @@ and should be treated as **visual ed**, which essentially it is.
     : H                toggle syntax highlighting if available
 
 # Shortcuts
-Most of the commands are working as shortcuts, e.g. while
+Simple no bulk (no line range) commands are working as shortcuts, e.g. while
 being in NORMAL mode press **i** to switch to INSERT mode,
-there are, however, a few exceptions, they are listed below:
+or **y**/**d** to yank/delete a single line, but there are a plenty
+of exceptions, listed below:
 
                  ESC   switch to NORMAL mode
               : or /   execute command
@@ -90,6 +91,9 @@ there are, however, a few exceptions, they are listed below:
             r <char>   replace single char
                    g   go to first line
                    G   go to last line
+                   w   go to the beginning of the next word
+                   e   go to the end of the next word
+                   b   go to the beginning of the previous word
 
 # Usage
     $ vici             open editor with "out.txt" source file name
