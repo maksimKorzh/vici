@@ -90,7 +90,7 @@ func dlrune() {
 func lnjoin() {
   if curln+1 > lastln { return }
   lline := buf[curln].txt
-  rline := buf[curln+1].txt
+  rline := " " + strings.TrimLeft(buf[curln+1].txt, " ")
   curcl = lnlen()
   buf[curln].txt = lline + rline
   stat := OK

@@ -137,7 +137,11 @@ func readkey() {
         case termbox.KeyTab: for i := 0; i < TABS; i++ { inrune(' ') }
         case termbox.KeyBackspace: dlrune()
         case termbox.KeyBackspace2: dlrune()
-        case termbox.KeyEnter: inrune('\n')
+        case termbox.KeyEnter:
+          line := buf[curln].txt
+          line = line[:len(line)-len(strings.TrimLeft(line, " "))]
+          inrune('\n')
+          for i := 0; i < len(line); i++ { inrune(' ') }
       }
     } else if mode == REPLACE {
       if ev.Key == termbox.KeySpace { rerune(' ') }
