@@ -94,6 +94,7 @@ func readkey() {
       switch ev.Ch {
         case ':': cprompt()
         case '/': cprompt()
+        case 'a': autoindent ^= 1
         case 'i': execcom("i")
         case 'r': execcom("R"); dostat(); termbox.Flush(); readkey(); curcl -= 1; mode = VIEW
         case 'R': execcom("R")
@@ -141,7 +142,9 @@ func readkey() {
           line := buf[curln].txt
           line = line[:len(line)-len(strings.TrimLeft(line, " "))]
           inrune('\n')
-          for i := 0; i < len(line); i++ { inrune(' ') }
+          if autoindent == 1 {
+            for i := 0; i < len(line); i++ { inrune(' ') }
+          }
       }
     } else if mode == REPLACE {
       if ev.Key == termbox.KeySpace { rerune(' ') }

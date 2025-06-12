@@ -117,6 +117,7 @@ var unst []edst       /* undo buffer */
 var rest []edst       /* redo buffer */
 var buf[]buftype      /* editor's buffer */
 var cpb[]buftype      /* copy buffer */
+var autoindent int    /* auto indentation toggler */
 var hl int            /* syntax highlight toggler (visual mode) */
 var mode int          /* visual/command mode toggler */
 var dirty bool        /* modified flag */

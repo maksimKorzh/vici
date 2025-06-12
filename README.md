@@ -36,6 +36,7 @@ and should be treated as **visual ed**, which essentially it is.
 
        EDIT:
 
+    : a                toggle auto indentation
     : i                switch to INSERT mode
     : R                switch to REPLACE mope
     : A                go to last char in line, switch to INSERT mode

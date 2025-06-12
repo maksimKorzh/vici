@@ -402,15 +402,21 @@ func dorender() {
 /* dostat -- display status bar */
 func dostat() {
   var modstat string
+  var indstat string
+  if autoindent == 1 {
+    indstat = "[autoindent] "
+  } else {
+    indstat = ""
+  }
   flstat := savefile + " - " + strconv.Itoa(lastln) + " lines"
   if dirty { flstat += " modified " } else { flstat += " saved" }
   if mode == EDIT { modstat = " I "} else if mode == REPLACE {
   modstat = " R " } else if mode == VIEW { modstat = " N " } else { modstat = " C " }
   curstat := " Row " + strconv.Itoa(curln) + ", Col " + strconv.Itoa(tabcl+1) + " "
-  uspace := len(modstat) + len(flstat) + len(curstat)
+  uspace := len(modstat) + len(indstat) + len(flstat) + len(curstat)
   spaces := ""
   if cols - uspace >= 1 { spaces = strings.Repeat(" ", cols - uspace) }
-  message := modstat + flstat + spaces + curstat
+  message := modstat + indstat + flstat + spaces + curstat
   msg(0, rows, COL2, COL3, message)
 }
 
