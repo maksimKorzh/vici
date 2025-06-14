@@ -393,7 +393,7 @@ func dorender() {
         msg(lnwidth, row-1, COL1, COL1, line)
       } 
     } else if row-1 != 0 {
-      msg(0, row-1, COL4, COL1, "*")
+      msg(0, row-1, COL4, COL1, "~")
     }
   }
   hlline(curln-offrw)
