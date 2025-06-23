@@ -110,7 +110,7 @@ var KEYWORDS = []string {
   "let", "var", "const", "iota", "type",
   "int", "char", "float", "double", "rune", "byte",
   "func", "function", "def",
-  "return",
+  "return", "undefined",
 }
 
 var unst []edst       /* undo buffer */
