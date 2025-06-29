@@ -111,6 +111,7 @@ var KEYWORDS = []string {
   "int", "char", "float", "double", "rune", "byte",
   "func", "function", "def",
   "return", "undefined",
+  "async", "await", "finally", "then",
 }
 
 var unst []edst       /* undo buffer */
