@@ -113,7 +113,7 @@ var KEYWORDS = []string {
   "return", "undefined",
   "async", "await", "finally", "then",
   "True", "False", "true", "false",
-  "null", "undefined",
+  "null", "undefined", "switch", "case",
 }
 
 var unst []edst       /* undo buffer */
