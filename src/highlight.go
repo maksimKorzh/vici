@@ -35,13 +35,14 @@ func pblank(line string, i *int) string {
 }
 
 /* pstr -- parse string */
-func pstr(line string, i *int) string {
+func pstr(line string, i *int, chr byte) string {
   *i++
-  str := "\""
-  for *i < len(line) && line[*i] != '"' {
-    if line[*i] == '\\' && (*i+1) < len(line) && line[*i+1] == '"'{
+  //str := "\""
+  str := string(chr)
+  for *i < len(line) && line[*i] != chr {
+    if line[*i] == '\\' && (*i+1) < len(line) && line[*i+1] == chr {
       *i += 2
-      str += "\\\""
+      str += "\\" + string(chr)
       if (*i-3) >= 0 && line[*i-3] == '\\' {
         return str
       } else {
@@ -102,8 +103,8 @@ func hlsyntax(col, row int, line string) {
       msg(col, row, COL7|BOLD, COL1, pnum(line, &i))
     } else if line[i] == ' ' {
       msg(col, row, COL1, COL1, pblank(line, &i))
-    } else if line[i] == '"' {
-      msg(col, row, COL8, COL1, pstr(line, &i))
+    } else if line[i] == '"' || line[i] == '`' {
+      msg(col, row, COL8, COL1, pstr(line, &i, line[i]))
     } else if line[i] == '\'' {
       msg(col, row, COL8|BOLD, COL1, pchr(line, &i))
     } else if line[i] == '/' || line[i] == '#' {
