@@ -110,7 +110,7 @@ var KEYWORDS = []string {
   "let", "var", "const", "iota", "type",
   "int", "char", "float", "double", "rune", "byte",
   "func", "function", "def",
-  "return", "undefined",
+  "return", "undefined", "continue",
   "async", "await", "finally", "then",
   "True", "False", "true", "false",
   "null", "undefined", "switch", "case",
