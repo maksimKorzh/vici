@@ -105,7 +105,7 @@ var KEYWORDS = []string {
   "import", "as", "from", "in", "with", "global",
   "and", "or", "fi", "then", "class",
   "try", "catch", "except", "pass",
-  "if", "else", "elif",
+  "if", "else", "elif", "raise",
   "for", "do", "done", "while", "break",
   "let", "var", "const", "iota", "type",
   "int", "char", "float", "double", "rune", "byte",
