@@ -2,6 +2,7 @@ package main
 
 import "strings"
 import "github.com/nsf/termbox-go"
+import "unicode/utf8"
 
 /* pnum -- parse number */
 func pnum(line string, i *int) string {
@@ -18,8 +19,9 @@ func pword(line string, i *int) string {
   word := ""
   for *i < len(line) && line[*i] != ' ' {
     if strings.Contains(":\"'+-*/<>=.,(){}[];", string(line[*i])) { return word }
-    word += string(line[*i])
-    *i++
+    r, size := utf8.DecodeRuneInString(line[*i:])
+    word += string(r)
+    *i += size
   }
   return word
 }
@@ -37,9 +39,9 @@ func pblank(line string, i *int) string {
 /* pstr -- parse string */
 func pstr(line string, i *int, chr byte) string {
   *i++
-  //str := "\""
   str := string(chr)
   for *i < len(line) && line[*i] != chr {
+    r, size := utf8.DecodeRuneInString(line[*i:])
     if line[*i] == '\\' && (*i+1) < len(line) && line[*i+1] == chr {
       *i += 2
       str += "\\" + string(chr)
@@ -49,8 +51,8 @@ func pstr(line string, i *int, chr byte) string {
         continue
       }
     }
-    str += string(line[*i])
-    *i++
+    str += string(r)
+    *i += size
   }
   if *i < len(line) { str += string(line[*i]) }
   *i++
@@ -62,6 +64,7 @@ func pchr(line string, i *int) string {
   *i++
   chr := "'"
   for *i < len(line) && line[*i] != '\'' {
+    r, size := utf8.DecodeRuneInString(line[*i:])
     if line[*i] == '\\' && (*i+1) < len(line) && line[*i+1] == '\'' {
       *i += 2
       chr += "\\'"
@@ -71,8 +74,8 @@ func pchr(line string, i *int) string {
         continue
       }
     }
-    chr += string(line[*i])
-    *i++
+    chr += string(r)
+    *i += size
   }
   if *i < len(line) { chr += string(line[*i]) }
   *i++
@@ -83,8 +86,9 @@ func pchr(line string, i *int) string {
 func pcomm(line string, i *int) string {
   comm := ""  
   for *i < len(line) {
-    comm += string(line[*i])
-    *i++
+    r, size := utf8.DecodeRuneInString(line[*i:])
+    comm += string(r)
+    *i += size
   }
   return comm
 }
@@ -93,10 +97,6 @@ func pcomm(line string, i *int) string {
 /* hlsyntax -- highlight syntax */
 func hlsyntax(col, row int, line string) {
   i := 0
-  if len(line) != len([]rune(line)) {
-    msg(col, row, COL1, COL1, line)
-    return
-  }
   for i < len(line) {
     j := i
     if line[i] >= '0' && line[i] <= '9' {
@@ -139,7 +139,8 @@ func hlsyntax(col, row int, line string) {
         msg(col, row, COL1, COL1, tok)
       }
     }
-    col += i-j
+    if i > len(line) { i = len(line) }
+    col += utf8.RuneCountInString(line[j:i])
   }
 }
 
